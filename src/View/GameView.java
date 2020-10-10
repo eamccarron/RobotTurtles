@@ -41,13 +41,15 @@ public class GameView{
 
         //Initialize the four (or more later on) cardStack Buttons with an actionListener
         moveForward = new CardStack(CardType.STEP_FORWARD, cardStackSprites[CardType.STEP_FORWARD.ordinal()]);
-        moveForward.addActionListener(new CardStackListener());
         turnLeft = new CardStack(CardType.TURN_LEFT, cardStackSprites[CardType.STEP_FORWARD.ordinal()]);
-        turnLeft.addActionListener(new CardStackListener());
         turnRight  = new CardStack(CardType.TURN_RIGHT, cardStackSprites[CardType.STEP_FORWARD.ordinal()]);
-        turnRight.addActionListener(new CardStackListener());
         bug = new CardStack(CardType.BUG, cardStackSprites[CardType.STEP_FORWARD.ordinal()]);
-        bug.addActionListener(new CardStackListener());
+
+        CardStackListener cardStackListener = new CardStackListener();
+        moveForward.addActionListener(cardStackListener);
+        turnLeft.addActionListener(cardStackListener);
+        turnRight.addActionListener(cardStackListener);
+        bug.addActionListener(cardStackListener);
 
         //Initialize the Card Chooser Dialog Window
         cardChooserDialog = new JDialog();
