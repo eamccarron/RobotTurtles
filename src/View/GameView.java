@@ -4,12 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
-//Three necessary imports from model:
-import Model.CardType; //CardTypes are needed for the CardStack buttons
-import Model.Tile; //In order to draw the positions of tiles, we need a function which takes an argument of Tile[]
-import Model.TurtleMover;  //The view and controller need to exchange state information
+//import the controller
+import Controller.*;
 
 public class GameView{
     TurtleMover controller;
@@ -70,15 +67,11 @@ public class GameView{
     }
 
     //Creates a dialog which prompts the current player to choose a card from a card stack
-    public void getNextCard(int player, int[] cardCount) {
+    public void getNextCard(int playerID, CardType[] hand) {
         cardChooserDialog.setVisible(true);
     }
 
 
-    //Called by the controller once all states have been appropriately updated at the end of a turn.
-    public void updateBoard(int[] playerLocations, Tile[] board){
-
-    }
 
     //The action listener for a card stack.  Generalized to be usable by a CardStack of any type.
     private class CardStackListener implements ActionListener {

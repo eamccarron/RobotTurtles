@@ -1,11 +1,12 @@
 package Model;
-
+import Controller.CardType;
 public class TurtleMaster {
-
+    private CardType[] hand;
+    
     //Return an int array where each index corresponds to the number of a certain kind of cards remaining
     //use CardType.ordinal() to index by card type
-    int[] getHand(){
-        return new int[]{-1,-1,-1,-1}; //TEMP
+    public CardType[] getHand(){
+       return hand; 
     }
 
     public TurtleMaster(){
