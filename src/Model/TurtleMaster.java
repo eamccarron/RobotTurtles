@@ -45,19 +45,26 @@ public class TurtleMaster {
     public boolean moveForward(){
         switch(direction){
             case NORTH:
+                if (position<boardLength)
+                    return false;
                 position -= boardLength;
                 break;
             case EAST:
+                if (position%boardLength == 7)
+                    return false;
                 position += 1;
                 break;
             case SOUTH:
+                if (position >= Board.BOARD_SIZE-boardLength)
+                    return false;
                 position += boardLength;
                 break;
             case WEST:
+                if (position%boardLength == 0)
+                    return false;
                 position -= 1;
                 break;
         }
-        //TODO Check if move is out of bounds
         return true;
     }
 
