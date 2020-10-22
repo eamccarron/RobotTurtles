@@ -6,7 +6,12 @@ public class TurtleMaster {
     private Direction direction;
     private final int boardLength = (int)Math.sqrt(Board.BOARD_SIZE);
     private CardType[] hand;
-    
+    private static final int NORTH = 0;
+    private static final int EAST = 1;
+    private static final int SOUTH = 2;
+    private static final int WEST = 3;
+    private int dir = 2;
+
     private enum Direction{
         NORTH,
         EAST,
@@ -68,6 +73,13 @@ public class TurtleMaster {
         return true;
     }
 
+    public void turn(String leftOrRight){
+        int turnDirection = 1;
+        if (leftOrRight.equals("left"))
+            turnDirection = -1;
+        dir = (dir+turnDirection)%4;
+    }
+
     //Return false if move is illegal or if there are not enough cards remaining.
     public boolean onCardPlayed(CardType card){
         //TODO Implement rotations
@@ -75,15 +87,14 @@ public class TurtleMaster {
         //TODO Check if move is illegal (enough cards?)
         switch(card){
             case STEP_FORWARD:
-                moveForward();
-                break;
+                return moveForward();
             case BUG:
                 break;
-            case LASER:
-                break;
             case TURN_LEFT:
+                turn("left");
                 break;
             case TURN_RIGHT:
+                turn("right");
                 break;
             default:
                 break;
