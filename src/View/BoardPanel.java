@@ -78,7 +78,8 @@ public class BoardPanel extends JPanel{
     }
 
     private BufferedImage scaleSprite(BufferedImage sprite, int width, int height){
-        
+        //TODO scale sprites
+       return null; 
     }
 
     public void updateTiles(HashMap<Integer, TileType> tileLayout){
