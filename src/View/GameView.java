@@ -16,10 +16,6 @@ public class GameView{
     private CardChooserDialog cardChooserDialog; 
     private BoardPanel boardPanel;
 
-    //Sprite arrays which are indexed by respective enumerations and/or constants
-    Icon[] playerSprites;
-    Icon[] tileSprites;
-
     public GameView(int boardSize,  int[] playerPositions, HashMap<Integer, TileType> boardLayout){
         loadSprites();
 
@@ -55,7 +51,7 @@ public class GameView{
     }
 
     public void updatePlayerDirection(int playerNumber, int direction){
-        boardPanel.updatePlayerDirection(playerNumber, direction)
+        boardPanel.updatePlayerDirection(playerNumber, direction);
     }
 
 	public void updateTiles(HashMap<Integer, TileType> layout) {

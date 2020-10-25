@@ -15,6 +15,7 @@ public class BoardPanel extends JPanel{
     private int boardSize; //The number of tiles on the board
     private int boardLength; //Assume square board so length = with
     private int[] playerPositions;
+    private int[] playerDirections;
     private HashMap<Integer, TileType> tileLayout;
     private BufferedImage[] playerSprites;
     private final BufferedImage[] tileSprites;
@@ -22,6 +23,7 @@ public class BoardPanel extends JPanel{
     public BoardPanel(int boardSize, int[] playerPositions, HashMap<Integer, TileType> tileLayout){
         super();
         this.playerPositions = playerPositions;
+        this.playerDirections = new int[4];
         this.tileLayout = tileLayout;
         this.boardSize = boardSize;
         boardLength = (int)Math.floor(Math.sqrt(boardSize)); 
@@ -37,12 +39,12 @@ public class BoardPanel extends JPanel{
     }
 
     private void loadSprites() throws IOException{
-        playerSprites[0] = ImageIO.read(new File("../../Assests/Player_1.bmp"));
-        playerSprites[1] = ImageIO.read(new File("../../Assests/Player_2.bmp"));
-        playerSprites[2] = ImageIO.read(new File("../../Assests/Player_3.bmp"));
-        playerSprites[3] = ImageIO.read(new File("../../Assests/Player_4.bmp"));
+        playerSprites[0] = ImageIO.read(new File("../Assests/Player_1.bmp"));
+        playerSprites[1] = ImageIO.read(new File("../Assests/Player_2.bmp"));
+        playerSprites[2] = ImageIO.read(new File("../Assests/Player_3.bmp"));
+        playerSprites[3] = ImageIO.read(new File("../Assests/Player_4.bmp"));
     }
-
+ 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -72,7 +74,7 @@ public class BoardPanel extends JPanel{
             
             int playerX = (pos % boardLength) * cellWidth + cellWidth / 2;
             int playerY = (pos / boardLength) * cellHeight + cellHeight / 2;
-            g2d.drawString(Integer.toString(i + 1), playerX, playerY);
+            g2d.drawImage(playerSprites[i], null, playerX, playerY);
             System.out.println("Player" + Integer.toString(i) + " drawn at " + Integer.toString(pos));
         }
     }
@@ -91,5 +93,6 @@ public class BoardPanel extends JPanel{
 	}
 
 	public void updatePlayerDirection(int playerNumber, int direction) {
+        playerDirections[playerNumber] = direction;
 	}
 }
