@@ -34,9 +34,9 @@ public class TurtleMover {
         board.playTurn(cardChosen);
         //Render new state in GameView
         view.updatePlayerPosition(activePlayer.getNumber(), activePlayer.getPosition());
+        view.updatePlayerDirection(activePlayer.getNumber(), activePlayer.getDirection());
         view.updateTiles(layout);
         view.redraw();
-
         view.getNextCard(board.getActivePlayer().getNumber(), board.getActivePlayer().getHand());
         return true;
     }

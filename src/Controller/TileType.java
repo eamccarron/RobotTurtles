@@ -1,11 +1,8 @@
 package Controller;
 
-//An enum to hold Tile types
+//An enum to communicate tile types to the view via the Controller
 public enum TileType {
     EMPTY,
     JEWEL,
-    CRATE,
     STONE_WALL,
-    ICE_WALL,
-    PUDDLE
 }

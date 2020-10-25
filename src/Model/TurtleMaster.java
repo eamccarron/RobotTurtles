@@ -109,4 +109,8 @@ public class TurtleMaster {
 	public int getPosition() {
 		return position;
     }
+
+	public int getDirection() {
+        return this.dir;
+	}
 }

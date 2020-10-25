@@ -54,6 +54,10 @@ public class GameView{
         boardPanel.updatePlayerPosition(playerNumber, position);
     }
 
+    public void updatePlayerDirection(int playerNumber, int direction){
+        boardPanel.updatePlayerDirection(playerNumber, direction)
+    }
+
 	public void updateTiles(HashMap<Integer, TileType> layout) {
        boardPanel.updateTiles(layout); 
 	}
