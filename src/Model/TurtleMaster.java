@@ -3,14 +3,15 @@ import Controller.CardType;
 public class TurtleMaster {
     private int playerNumber;
     private int position;
-    private Direction direction;
+    //private Direction direction;
     private final int boardLength = (int)Math.sqrt(Board.BOARD_SIZE);
     private CardType[] hand;
     private static final int NORTH = 0;
     private static final int EAST = 1;
     private static final int SOUTH = 2;
     private static final int WEST = 3;
-    private int dir = 2;
+    private int direction;
+
 
     private enum Direction{
         NORTH,
@@ -31,19 +32,19 @@ public class TurtleMaster {
         switch(this.playerNumber){
             case Board.PLAYER_1:
                 position = 0;
-                direction = Direction.SOUTH;
+                direction = SOUTH;
                 break;
             case Board.PLAYER_2:
                 position = 7;
-                direction = Direction.SOUTH;
+                direction = SOUTH;
                 break;
             case Board.PLAYER_3:
                 position = 63;
-                direction = Direction.NORTH;
+                direction = NORTH;
                 break;
             case Board.PLAYER_4:
                 position = 56;
-                direction = Direction.NORTH;
+                direction = NORTH;
         }
     }
 
@@ -77,8 +78,10 @@ public class TurtleMaster {
         int turnDirection = 1;
         if (leftOrRight.equals("left"))
             turnDirection = -1;
-        dir = (dir+turnDirection)%4;
+        direction = (direction+turnDirection)%4;
     }
+
+
 
     //Return false if move is illegal or if there are not enough cards remaining.
     public boolean onCardPlayed(CardType card){
@@ -111,6 +114,6 @@ public class TurtleMaster {
     }
 
 	public int getDirection() {
-        return this.dir;
+        return this.direction;
 	}
 }
