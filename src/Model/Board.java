@@ -42,10 +42,15 @@ public class Board {
 
     public boolean playTurn(CardType card){
         //TODO check for illegal moves
-        players[currentTurn].onCardPlayed(card);
+        boolean successfulMove = players[currentTurn].onCardPlayed(card);
+        if (!successfulMove)
+            return false;
+        return true;
+    }
+
+    public void onTurnEnded(){
         currentTurn++;
         if(currentTurn > 3) currentTurn = 0;
         System.out.println(currentTurn);
-        return true;
     }
 }
