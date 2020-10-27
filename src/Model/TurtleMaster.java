@@ -2,7 +2,8 @@ package Model;
 import Controller.CardType;
 public class TurtleMaster {
     private int playerNumber;
-    private int position;
+    private int currPosition;
+    private int prevPosition;
     //private Direction direction;
     private final int boardLength = (int)Math.sqrt(Board.BOARD_SIZE);
     private CardType[] hand;
@@ -31,19 +32,19 @@ public class TurtleMaster {
         //Place players clockwise in 4 corners of board
         switch(this.playerNumber){
             case Board.PLAYER_1:
-                position = 0;
+                currPosition = 0;
                 direction = SOUTH;
                 break;
             case Board.PLAYER_2:
-                position = 7;
+                currPosition = 7;
                 direction = SOUTH;
                 break;
             case Board.PLAYER_3:
-                position = 63;
+                currPosition = 63;
                 direction = NORTH;
                 break;
             case Board.PLAYER_4:
-                position = 56;
+                currPosition = 56;
                 direction = NORTH;
         }
     }
@@ -51,24 +52,24 @@ public class TurtleMaster {
     public boolean moveForward(){
         switch(direction){
             case NORTH:
-                if (position<boardLength)
+                if (currPosition<boardLength)
                     return false;
-                position -= boardLength;
+                currPosition -= boardLength;
                 break;
             case EAST:
-                if (position%boardLength == 7)
+                if (currPosition%boardLength == 7)
                     return false;
-                position += 1;
+                currPosition += 1;
                 break;
             case SOUTH:
-                if (position >= Board.BOARD_SIZE-boardLength)
+                if (currPosition >= Board.BOARD_SIZE-boardLength)
                     return false;
-                position += boardLength;
+                currPosition += boardLength;
                 break;
             case WEST:
-                if (position%boardLength == 0)
+                if (currPosition%boardLength == 0)
                     return false;
-                position -= 1;
+                currPosition -= 1;
                 break;
         }
         return true;
@@ -81,13 +82,16 @@ public class TurtleMaster {
         direction = (direction+turnDirection)%4;
     }
 
-
+    public void bug(){
+        currPosition = prevPosition;
+    }
 
     //Return false if move is illegal or if there are not enough cards remaining.
     public boolean onCardPlayed(CardType card){
         //TODO Implement rotations
         //TODO update hand
         //TODO Check if move is illegal (enough cards?)
+        prevPosition = currPosition ;
         switch(card){
             case STEP_FORWARD:
                 return moveForward();
@@ -110,7 +114,7 @@ public class TurtleMaster {
 	}
 
 	public int getPosition() {
-		return position;
+		return currPosition;
     }
 
 	public int getDirection() {
