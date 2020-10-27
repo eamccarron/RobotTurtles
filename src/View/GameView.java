@@ -10,7 +10,7 @@ import Controller.*;
 public class GameView{
     TurtleMover controller;
     //Dimensions
-    private final Dimension windowSize = new Dimension(800,600);
+    private final Dimension windowSize = new Dimension(1000,1000);
     //GUI Elements
     private JFrame window;
     private CardChooserDialog cardChooserDialog; 
@@ -34,6 +34,7 @@ public class GameView{
         window.getContentPane().add(boardPanel, BorderLayout.CENTER);
 
         window.setVisible(true);
+        window.setResizable(false);
         cardChooserDialog.setVisible(true);
     }
 
@@ -44,6 +45,7 @@ public class GameView{
     //Creates a dialog which prompts the current player to choose a card from a card stack
     public void getNextCard(int playerID, CardType[] hand) {
         cardChooserDialog.setVisible(true);
+        cardChooserDialog.promptNextCard();
     }
 
     public void updatePlayerPosition(int playerNumber, int position){

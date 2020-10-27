@@ -37,7 +37,10 @@ public class TurtleMover {
         view.updatePlayerDirection(activePlayer.getNumber(), activePlayer.getDirection());
         view.updateTiles(layout);
         view.redraw();
-        view.getNextCard(board.getActivePlayer().getNumber(), board.getActivePlayer().getHand());
         return true;
     }
+
+	public static void onTurnEnded() {
+        view.getNextCard(board.getActivePlayer().getNumber(), board.getActivePlayer().getHand());
+	}
 }

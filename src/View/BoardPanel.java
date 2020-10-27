@@ -17,7 +17,7 @@ public class BoardPanel extends JPanel{
     private int[] playerPositions;
     private int[] playerDirections;
     private HashMap<Integer, TileType> tileLayout;
-    private BufferedImage[] playerSprites;
+    private Image[] playerSprites;
     private final BufferedImage[] tileSprites;
 
     public BoardPanel(int boardSize, int[] playerPositions, HashMap<Integer, TileType> tileLayout){
@@ -39,10 +39,14 @@ public class BoardPanel extends JPanel{
     }
 
     private void loadSprites() throws IOException{
-        playerSprites[0] = ImageIO.read(new File("../Assests/Player_1.bmp"));
-        playerSprites[1] = ImageIO.read(new File("../Assests/Player_2.bmp"));
-        playerSprites[2] = ImageIO.read(new File("../Assests/Player_3.bmp"));
-        playerSprites[3] = ImageIO.read(new File("../Assests/Player_4.bmp"));
+        //DEBUG
+            File f = new File("../Assets/Player_1.png");
+            System.out.println(f.exists());
+        //END DEBUG
+        playerSprites[0] = ImageIO.read(new File("../Assets/Player_1.jpg"));
+        playerSprites[1] = ImageIO.read(new File("../Assets/Player_2.jpg"));
+        playerSprites[2] = ImageIO.read(new File("../Assets/Player_3.jpg"));
+        playerSprites[3] = ImageIO.read(new File("../Assets/Player_4.jpg"));
     }
  
     @Override
@@ -72,9 +76,9 @@ public class BoardPanel extends JPanel{
             if(pos == -1)
                 continue;
             
-            int playerX = (pos % boardLength) * cellWidth + cellWidth / 2;
-            int playerY = (pos / boardLength) * cellHeight + cellHeight / 2;
-            g2d.drawImage(playerSprites[i], null, playerX, playerY);
+            int playerX = (pos % boardLength) * cellWidth;
+            int playerY = (pos / boardLength) * cellHeight;
+            g2d.drawImage(playerSprites[i], playerX, playerY, null);
             System.out.println("Player" + Integer.toString(i) + " drawn at " + Integer.toString(pos));
         }
     }

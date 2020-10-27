@@ -1,12 +1,11 @@
 package Controller;
 
-//An enum to hold card types
+//An enum used to communicate the type of card played to the model from the view
 public enum CardType {
     STEP_FORWARD,
     TURN_LEFT,
     TURN_RIGHT,
-    BUG,
-    LASER;
+    BUG;
 
     //Return a nicely formatted string, mostly for debugging and testing purposes
     @Override
@@ -20,8 +19,6 @@ public enum CardType {
                 return "Turn Right";
             case BUG:
                 return "Bug";
-            case LASER:
-                return "Laser";
             default:
                 //return standard Object toString() by default, but this default can never actually be reached
                 return super.toString();
