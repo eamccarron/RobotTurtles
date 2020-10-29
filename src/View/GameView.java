@@ -43,9 +43,9 @@ public class GameView{
     }
 
     //Creates a dialog which prompts the current player to choose a card from a card stack
-    public void getNextCard(int playerID, CardType[] hand) {
+    public void getNextCard(int playerID) {
         cardChooserDialog.setVisible(true);
-        cardChooserDialog.promptNextCard();
+        cardChooserDialog.promptNextCard(playerID);
     }
 
     public void updatePlayerPosition(int playerNumber, int position){

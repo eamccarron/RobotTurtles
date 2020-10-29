@@ -42,6 +42,8 @@ public class CardChooserDialog extends JDialog {
         this.add(turnRight);
         this.add(bug);
         this.add(endTurn);
+        this.add(status);
+
         endTurn.setVisible(false);
         bug.setVisible(false);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -51,12 +53,12 @@ public class CardChooserDialog extends JDialog {
         stepForward.setVisible(false); 
         turnLeft.setVisible(false);
         turnRight.setVisible(false);
-
+        status.setText("End turn or Bug?");
         endTurn.setVisible(true);
         bug.setVisible(true);
     }
 
-	public void promptNextCard() {
+	public void promptNextCard(int playerID) {
         stepForward.setVisible(true);
         turnLeft.setVisible(true);
         turnRight.setVisible(true);

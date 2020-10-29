@@ -19,7 +19,7 @@ public class TurtleMover {
         TurtleMaster activePlayer = board.getActivePlayer();
 
         view = new GameView(Board.BOARD_SIZE, playerPositions, layout); 
-        view.getNextCard(activePlayer.getNumber(), activePlayer.getHand());
+        view.getNextCard(activePlayer.getNumber());
     }
 
     public static void main(String[] args) {
