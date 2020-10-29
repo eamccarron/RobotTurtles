@@ -41,6 +41,7 @@ public class TurtleMover {
     }
 
 	public static void onTurnEnded() {
+        board.onTurnEnded();
         view.getNextCard(board.getActivePlayer().getNumber(), board.getActivePlayer().getHand());
 	}
 }
