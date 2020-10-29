@@ -17,8 +17,8 @@ public class BoardPanel extends JPanel{
     private int[] playerPositions;
     private int[] playerDirections;
     private HashMap<Integer, TileType> tileLayout;
-    private Image[] playerSprites;
-    private final BufferedImage[] tileSprites;
+    private BufferedImage[] playerSprites;
+    private BufferedImage[] tileSprites;
 
     public BoardPanel(int boardSize, int[] playerPositions, HashMap<Integer, TileType> tileLayout){
         super();
@@ -30,7 +30,6 @@ public class BoardPanel extends JPanel{
             
         playerSprites = new BufferedImage[4];
         tileSprites = new BufferedImage[TileType.values().length];
-        System.out.println(System.getProperty("user.dir"));
         try{
         loadSprites();
         } catch(IOException iOe){
@@ -39,10 +38,6 @@ public class BoardPanel extends JPanel{
     }
 
     private void loadSprites() throws IOException{
-        //DEBUG
-            File f = new File("../Assets/Player_1.png");
-            System.out.println(f.exists());
-        //END DEBUG
         playerSprites[0] = ImageIO.read(new File("../Assets/Player_1.jpg"));
         playerSprites[1] = ImageIO.read(new File("../Assets/Player_2.jpg"));
         playerSprites[2] = ImageIO.read(new File("../Assets/Player_3.jpg"));
@@ -79,15 +74,24 @@ public class BoardPanel extends JPanel{
             int playerX = (pos % boardLength) * cellWidth;
             int playerY = (pos / boardLength) * cellHeight;
             g2d.drawImage(playerSprites[i], playerX, playerY, null);
-            System.out.println("Player" + Integer.toString(i) + " drawn at " + Integer.toString(pos));
         }
     }
 
-    private BufferedImage scaleSprite(BufferedImage sprite, int width, int height){
-        //TODO scale sprites
-       return null; 
-    }
+    private BufferedImage rotatePlayerSprite(BufferedImage sprite, int prevDir, int newDir){
+       int nRot = newDir == 0 ? 4 - prevDir : newDir - prevDir;
+       int width = sprite.getWidth(); 
+       int height = sprite.getHeight();
 
+       BufferedImage newSprite = new BufferedImage(height, width, sprite.getType());
+
+       Graphics2D graphics2D = newSprite.createGraphics();
+       graphics2D.translate((height - width) / 2, (height - width) / 2);
+       graphics2D.rotate((Math.PI / 2) * nRot, height / 2, width / 2);
+       graphics2D.drawRenderedImage(sprite, null);
+       
+       return newSprite; 
+    }
+    
     public void updateTiles(HashMap<Integer, TileType> tileLayout){
         //TODO render tile sprites
     }
@@ -97,6 +101,10 @@ public class BoardPanel extends JPanel{
 	}
 
 	public void updatePlayerDirection(int playerNumber, int direction) {
+        if(playerDirections[playerNumber] == direction)
+            return;
+        System.out.printf("Player %d getting rotated from %d to %d\n", playerNumber, playerDirections[playerNumber], direction);
+        playerSprites[playerNumber] = rotatePlayerSprite(playerSprites[playerNumber], playerDirections[playerNumber], direction);
         playerDirections[playerNumber] = direction;
 	}
 }
