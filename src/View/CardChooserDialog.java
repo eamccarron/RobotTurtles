@@ -28,6 +28,7 @@ public class CardChooserDialog extends JDialog {
 
         endTurn = new JButton("End Turn");
         status = new JTextField();
+        status.setEditable(false);
 
         CardStackListener cardStackListener = new CardStackListener();
         stepForward.addActionListener(cardStackListener);
@@ -71,7 +72,6 @@ public class CardChooserDialog extends JDialog {
         public void actionPerformed(ActionEvent e) {
             assert e.getSource() instanceof CardStack; // This listener should only be used for cardStacks
             CardType cardChosen = ((CardStack) (e.getSource())).getCardType();
-            CardChooserDialog.this.setVisible(false);
             TurtleMover.onCardChosen(cardChosen);
             CardChooserDialog.this.promptEndTurn();
         }
