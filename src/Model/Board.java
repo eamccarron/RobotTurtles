@@ -35,7 +35,7 @@ public class Board {
 	public int[] getPlayerPositions() {
         int[] positions = new int[players.length];
         for(int i = 0; i < positions.length; i++){
-            positions[i] = players[i].getPosition();
+            positions[i] = players[i].turtle.getPosition();
         }
         return positions;
     }
