@@ -33,8 +33,8 @@ public class TurtleMover {
         //Update state of model        
         board.playTurn(cardChosen);
         //Render new state in GameView
-        view.updatePlayerPosition(activePlayer.getNumber(), activePlayer.getPosition());
-        view.updatePlayerDirection(activePlayer.getNumber(), activePlayer.getDirection());
+        view.updatePlayerPosition(activePlayer.getNumber(), activePlayer.getTurtlePosition());
+        view.updatePlayerDirection(activePlayer.getNumber(), activePlayer.getTurtleDirection());
         view.updateTiles(layout);
         view.redraw();
         return true;
