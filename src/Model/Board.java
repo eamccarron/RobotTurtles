@@ -21,7 +21,7 @@ public class Board {
     public Board(int numPlayers){
         players = new TurtleMaster[numPlayers];
         for(int i = 0; i < numPlayers; i++){ 
-            players[i] = new TurtleMaster(i);
+            players[i] = new TurtleMaster(i, this);
         }
     }
 
