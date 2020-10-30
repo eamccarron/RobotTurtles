@@ -102,8 +102,9 @@ public class CardChooserDialog extends JDialog {
                 System.out.println("Illegal Move");
                 CardChooserDialog.this.promptIllegalMove();
                 CardChooserDialog.this.promptNextCard();
-            }else
+            }else if(cardChosen != CardType.BUG){  //Only prompt end turn if the bug card was not chosen
                 CardChooserDialog.this.promptEndTurn();
+            }
         }
     }
 

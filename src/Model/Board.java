@@ -56,7 +56,6 @@ public class Board {
 
     public boolean playTurn(CardType card){
         //TODO check for illegal moves
-        System.out.println(card + " Played by " + currentTurn);
         boolean successfulMove = players[currentTurn].onCardPlayed(card);
         if (!successfulMove)
             return false;

@@ -38,6 +38,8 @@ public class TurtleMover {
         view.updatePlayerDirection(activePlayer.getNumber(), activePlayer.getTurtleDirection());
         view.updateTiles(layout);
         view.redraw();
+        if(cardChosen == CardType.BUG) //If the bug card was chosen, prompt the player to choose a new move
+            view.getNextCard(activePlayer.getNumber());
         return true;
     }
 
