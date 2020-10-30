@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import Controller.TileType;
 import Controller.CardType;
-import Controller.TurtleMover;
+import Controller.Controller;
 
 public class Board {
     private int currentTurn = PLAYER_1;
@@ -87,7 +87,7 @@ public class Board {
         }
         //If all players have won, end game
         if(gameOver){
-           TurtleMover.onGameEnded(winOrder); 
+           Controller.onGameEnded(winOrder); 
         }
 
         do{ 

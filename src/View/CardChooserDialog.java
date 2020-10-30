@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.io.IOException;
 
 import Controller.CardType;
-import Controller.TurtleMover;
+import Controller.Controller;
 
 public class CardChooserDialog extends JDialog {
     private CardStack stepForward;
@@ -43,7 +43,7 @@ public class CardChooserDialog extends JDialog {
         turnLeft.addActionListener(cardStackListener);
         turnRight.addActionListener(cardStackListener);
         bug.addActionListener(cardStackListener);
-        endTurn.addActionListener( e -> TurtleMover.onTurnEnded());
+        endTurn.addActionListener( e -> Controller.onTurnEnded());
         this.setSize(windowSize); 
         this.setLayout(new FlowLayout());
         this.add(stepForward);
@@ -94,7 +94,7 @@ public class CardChooserDialog extends JDialog {
         public void actionPerformed(ActionEvent e) {
             assert e.getSource() instanceof CardStack; // This listener should only be used for cardStacks
             CardType cardChosen = ((CardStack) (e.getSource())).getCardType();
-            if(!TurtleMover.onCardChosen(cardChosen)){
+            if(!Controller.onCardChosen(cardChosen)){
                 System.out.println("Illegal Move");
                 CardChooserDialog.this.promptIllegalMove();
                 CardChooserDialog.this.promptNextCard();

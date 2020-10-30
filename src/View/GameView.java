@@ -8,9 +8,10 @@ import java.util.HashMap;
 //import the controller
 import Controller.*;
 
-//The main window for the game.  Responsible for communicating updates from the controller to its components, which then update to display the state of the gameObjects. 
+//The main window for the game.  
+//Responsible for communicating updates from the controller to its components, which then update to display the state of the gameObjects. 
 public class GameView{
-    TurtleMover controller;
+    Controller controller;
     //Dimensions
     private final Dimension windowSize = new Dimension(1000,1000);
     //GUI Elements
@@ -18,6 +19,7 @@ public class GameView{
     private CardChooserDialog cardChooserDialog; 
     private BoardPanel boardPanel;
 
+    //Initializes a new game view based on the game parameters which are determined by the Controller.
     public GameView(int boardSize,  int[] playerPositions, int[] playerDirections, HashMap<Integer, TileType> boardLayout){
         loadSprites();
 
@@ -84,7 +86,7 @@ public class GameView{
         JButton playAgain = new JButton("Play Again?");
         playAgain.setVisible(true);
 
-        playAgain.addActionListener(e -> TurtleMover.initGame(4));
+        playAgain.addActionListener(e -> Controller.initGame(4));
 
         window.getContentPane().add(endGameStatus, BorderLayout.CENTER);
         window.getContentPane().add(playAgain, BorderLayout.SOUTH);
