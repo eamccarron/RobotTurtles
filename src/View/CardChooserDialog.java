@@ -62,10 +62,10 @@ public class CardChooserDialog extends JDialog {
     }
 
     private void loadIcons() throws IOException{
-        cardIcons[CardType.STEP_FORWARD.ordinal()] = new ImageIcon("../Assets/StepForwardCard.png");
-        cardIcons[CardType.TURN_LEFT.ordinal()] = new ImageIcon("../Assets/TurnLeftCard.png");
-        cardIcons[CardType.TURN_RIGHT.ordinal()] = new ImageIcon("../Assets/TurnRightCard.png");
-        cardIcons[CardType.BUG.ordinal()] = new ImageIcon("../Assets/BugCard.png");
+        cardIcons[CardType.STEP_FORWARD.ordinal()] = new ImageIcon("Assets/StepForwardCard.png");
+        cardIcons[CardType.TURN_LEFT.ordinal()] = new ImageIcon("Assets/TurnLeftCard.png");
+        cardIcons[CardType.TURN_RIGHT.ordinal()] = new ImageIcon("Assets/TurnRightCard.png");
+        cardIcons[CardType.BUG.ordinal()] = new ImageIcon("Assets/BugCard.png");
     }
 
     public void setStatus(String text){
@@ -74,6 +74,7 @@ public class CardChooserDialog extends JDialog {
 
     private void promptIllegalMove(){
         setStatus("Illegal move.  Try again.");
+        promptNextCard();
     }
 
     private void promptEndTurn(){
@@ -99,11 +100,9 @@ public class CardChooserDialog extends JDialog {
             assert e.getSource() instanceof CardStack; // This listener should only be used for cardStacks
             CardType cardChosen = ((CardStack) (e.getSource())).getCardType();
             if(!TurtleMover.onCardChosen(cardChosen)){
-                System.out.println("Illegal Move");
-                CardChooserDialog.this.promptIllegalMove();
-                CardChooserDialog.this.promptNextCard();
-            }else
-                CardChooserDialog.this.promptEndTurn();
+                promptIllegalMove();
+            }
+            CardChooserDialog.this.promptEndTurn();
         }
     }
 

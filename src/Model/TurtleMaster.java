@@ -16,7 +16,6 @@ public class TurtleMaster {
         //TODO Implement rotations
         //TODO update hand
         //TODO Check if move is illegal (enough cards?)
-        turtle.setPrevPosition(turtle.getPosition());
         switch(card){
             case STEP_FORWARD:
                 return turtle.moveForward();
