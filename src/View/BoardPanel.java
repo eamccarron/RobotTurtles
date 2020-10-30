@@ -41,12 +41,12 @@ public class BoardPanel extends JPanel{
     }
 
     private void loadSprites() throws IOException{
-        playerSprites[0] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_1.jpg")), 0, playerDirections[0]);
-        playerSprites[1] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_2.jpg")), 0, playerDirections[1]);
-        playerSprites[2] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_3.jpg")), 0, playerDirections[2]);
-        playerSprites[3] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_4.jpg")), 0, playerDirections[3]);
+        playerSprites[0] = rotatePlayerSprite(ImageIO.read(new File("Assets/Player_1.jpg")), 0, playerDirections[0]);
+        playerSprites[1] = rotatePlayerSprite(ImageIO.read(new File("Assets/Player_2.jpg")), 0, playerDirections[1]);
+        playerSprites[2] = rotatePlayerSprite(ImageIO.read(new File("Assets/Player_3.jpg")), 0, playerDirections[2]);
+        playerSprites[3] = rotatePlayerSprite(ImageIO.read(new File("Assets/Player_4.jpg")), 0, playerDirections[3]);
 
-        tileSprites[TileType.JEWEL.ordinal()] = ImageIO.read(new File("../Assets/Jewel.png"));
+        tileSprites[TileType.JEWEL.ordinal()] = ImageIO.read(new File("Assets/Jewel.png"));
     }
  
     @Override
