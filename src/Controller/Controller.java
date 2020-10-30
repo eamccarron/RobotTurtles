@@ -31,7 +31,7 @@ public class Controller {
         HashMap<Integer, TileType> layout = board.getTileLayout(); //Update tileLayout (in case in a future version there are tiles that can be moved)
         TurtleMaster activePlayer = board.getActivePlayer();
         //Update state of model        
-        if(!board.playTurn(cardChosen)) //Check to see if the card chosen is a valid move.
+        if(!board.playTurn(cardChosen)) //Check to see if the card chosen is a valid move.t 
             return false;
         //Render new state in GameView
         view.updatePlayerPosition(activePlayer.getNumber(), activePlayer.getTurtlePosition());

@@ -86,7 +86,7 @@ public class GameView{
         JButton playAgain = new JButton("Play Again?");
         playAgain.setVisible(true);
 
-        playAgain.addActionListener(e -> Controller.initGame(4));
+        playAgain.addActionListener(e -> Controller.initGame());
 
         window.getContentPane().add(endGameStatus, BorderLayout.CENTER);
         window.getContentPane().add(playAgain, BorderLayout.SOUTH);
