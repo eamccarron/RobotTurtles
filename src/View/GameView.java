@@ -2,11 +2,13 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 //import the controller
 import Controller.*;
 
+//The main window for the game.  Responsible for communicating updates from the controller to its components, which then update to display the state of the gameObjects. 
 public class GameView{
     TurtleMover controller;
     //Dimensions
@@ -66,5 +68,25 @@ public class GameView{
 
 	public void promptWin(int number) {
         cardChooserDialog.promptWin(number);
+	}
+
+	public void showEndGameScreen(ArrayList<Integer> winOrder) {
+        //Attempted to create and endgame message and replay capability but I couldn't figure out why it doesn't render.  Will fix for next Milestone
+        System.out.println("Rendering endgame");
+        window.removeAll(); 
+        cardChooserDialog.setVisible(false);
+
+        JTextField endGameStatus = new JTextField();
+        endGameStatus.setEditable(false);
+        endGameStatus.setFont(new Font("Monospace", 0, 24));
+        String sWinOrder = String.format("First: %d \n Second: %d \n Third: %d \n Fourth: %d", winOrder.get(0), winOrder.get(1), winOrder.get(2), winOrder.get(3));
+        endGameStatus.setText("Well Played!  The results are: \n" + sWinOrder);
+        JButton playAgain = new JButton("Play Again?");
+        playAgain.setVisible(true);
+
+        playAgain.addActionListener(e -> TurtleMover.initGame(4));
+
+        window.getContentPane().add(endGameStatus, BorderLayout.CENTER);
+        window.getContentPane().add(playAgain, BorderLayout.SOUTH);
 	}
 }

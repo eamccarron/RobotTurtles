@@ -3,6 +3,7 @@ package Controller;
 import View.GameView;
 import Model.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 //The controller for the game, responsible for main game loop and tracking turns. Static since each game should only have one controller.
@@ -11,7 +12,7 @@ public class TurtleMover {
     private static Board board;
     private static int numPlayers;
     
-    private static void initGame(int numPlayers){
+    public static void initGame(int numPlayers){
         TurtleMover.numPlayers = numPlayers;
         board = new Board(4);
         HashMap<Integer, TileType> layout = board.getTileLayout();
@@ -48,5 +49,9 @@ public class TurtleMover {
 	public static void onTurnEnded() {
         board.onTurnEnded();
         view.getNextCard(board.getActivePlayer().getNumber());
+	}
+
+	public static void onGameEnded(ArrayList<Integer> winOrder) {
+        view.showEndGameScreen(winOrder);
 	}
 }

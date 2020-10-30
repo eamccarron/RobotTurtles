@@ -4,10 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import Controller.CardType;
@@ -19,7 +16,6 @@ public class CardChooserDialog extends JDialog {
     private CardStack turnRight;
     private CardStack bug;
     private JButton endTurn;
-    private int currentPlayer;
     private ImageIcon[] cardIcons;
 
     private final Dimension windowSize = new Dimension(600, 300);

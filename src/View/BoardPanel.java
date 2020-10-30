@@ -42,9 +42,11 @@ public class BoardPanel extends JPanel{
 
     private void loadSprites() throws IOException{
         playerSprites[0] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_1.jpg")), 0, playerDirections[0]);
-        playerSprites[1] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_2.jpg")), 0, playerDirections[1]);;
-        playerSprites[2] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_3.jpg")), 0, playerDirections[2]);;
-        playerSprites[3] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_4.jpg")), 0, playerDirections[3]);;
+        playerSprites[1] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_2.jpg")), 0, playerDirections[1]);
+        playerSprites[2] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_3.jpg")), 0, playerDirections[2]);
+        playerSprites[3] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_4.jpg")), 0, playerDirections[3]);
+
+        tileSprites[TileType.JEWEL.ordinal()] = ImageIO.read(new File("../Assets/Jewel.png"));
     }
  
     @Override
@@ -56,7 +58,10 @@ public class BoardPanel extends JPanel{
         int cellWidth = width/boardLength;
         int cellHeight = height/boardLength;
 
+        //Cast graphics to Graphics2D to render sprites
+        assert g instanceof Graphics2D;
         Graphics2D g2d = (Graphics2D)g;
+        
         //Draw equally spaced vertical lines 
         g2d.setColor(Color.BLACK); 
         for(int i = 0; i < boardLength; i++){
@@ -67,8 +72,17 @@ public class BoardPanel extends JPanel{
             g2d.drawLine(0, cellHeight * i, width, cellHeight * i);
         }
         
+        //Draw tiles
+        for(int i = 0; i < boardSize; i++){
+            TileType tile = tileLayout.getOrDefault(i, TileType.EMPTY);
+            if(tile != TileType.EMPTY){
+                int tileX = (i % boardLength) * cellWidth;
+                int tileY = (i / boardLength) * cellHeight;
+
+                g2d.drawImage(tileSprites[tile.ordinal()], tileX, tileY, null);
+            }
+        }
         //Draw players
-        g2d.setFont(new Font("Monospaced", Font.PLAIN, 18));
         for(int i = 0; i < playerPositions.length; i++){
             int pos = playerPositions[i];
             if(pos == -1)
@@ -106,7 +120,6 @@ public class BoardPanel extends JPanel{
 	public void updatePlayerDirection(int playerNumber, int direction) {
         if(playerDirections[playerNumber] == direction)
             return;
-        System.out.printf("Player %d getting rotated from %d to %d\n", playerNumber, playerDirections[playerNumber], direction);
         playerSprites[playerNumber] = rotatePlayerSprite(playerSprites[playerNumber], playerDirections[playerNumber], direction);
         playerDirections[playerNumber] = direction;
 	}
