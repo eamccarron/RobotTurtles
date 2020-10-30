@@ -10,44 +10,42 @@ public class Turtle {
     private static final int EAST = 1;
     private static final int SOUTH = 2;
     private static final int WEST = 3;
-    private int direction;
+    private int currDir;
+    private int prevDir;
     private Board board;
 
     public Turtle(int playerID, Board board){
         this.playerID  = playerID;
         this.board = board;
-        //Place players clockwise in 4 corners of board
+        //Place players clockwise in 4 corners of board facing center
         switch(this.playerID){
             case Board.PLAYER_1:
-                currPosition = 0;
-                direction = SOUTH;
+                currPosition = prevPosition = 0;
+                currDir = prevDir = SOUTH;
                 break;
             case Board.PLAYER_2:
-                currPosition = 7;
-                direction = SOUTH;
+                currPosition = prevPosition = 7;
+                currDir = prevDir = SOUTH;
                 break;
             case Board.PLAYER_3:
-                currPosition = 63;
-                direction = NORTH;
+                currPosition = prevPosition = 63;
+                currDir = prevDir = NORTH;
                 break;
             case Board.PLAYER_4:
-                currPosition = 56;
-                direction = NORTH;
+                currPosition = prevPosition = 56;
+                currDir = prevDir = NORTH;
         }
-        board.setOccupied(currPosition);
     }
 
     public boolean moveForward(){
         int newPosition;
-        switch(direction){
+        switch(currDir){
             case NORTH:
                 if (currPosition<boardLength)
                     return false;
                 newPosition = currPosition - boardLength;
                 if (board.isPositionOccupied(newPosition))
                     return false;
-                prevPosition = currPosition;
-                currPosition = newPosition;
                 break;
             case EAST:
                 if (currPosition%boardLength == 7)
@@ -55,8 +53,6 @@ public class Turtle {
                 newPosition = currPosition  + 1;
                 if (board.isPositionOccupied(newPosition))
                     return false;
-                prevPosition = currPosition;
-                currPosition = newPosition;
                 break;
             case SOUTH:
                 if (currPosition >= Board.BOARD_SIZE-boardLength)
@@ -64,8 +60,6 @@ public class Turtle {
                 newPosition = currPosition + boardLength;
                 if (board.isPositionOccupied(newPosition))
                     return false;
-                prevPosition = currPosition;
-                currPosition = newPosition;
                 break;
             case WEST:
                 if (currPosition%boardLength == 0)
@@ -73,28 +67,38 @@ public class Turtle {
                 newPosition = currPosition  - 1;
                 if (board.isPositionOccupied(newPosition))
                     return false;
-                prevPosition = currPosition;
-                currPosition = newPosition;
                 break;
+            default:
+                newPosition = currPosition;
         }
-        board.setUnoccupied(prevPosition);
+        storePrevState();
+        currPosition = newPosition;
+
+        System.out.printf("CurrPosition: %d, PrevPosition: %d\n", currPosition, prevPosition);
         board.setOccupied(currPosition);
+        board.setUnoccupied(prevPosition);
         return true;
     }
 
-
     public void bug(){
-        currPosition = prevPosition;
+        board.setUnoccupied(currPosition);
+        board.setOccupied(prevPosition);
+        currDir = prevDir;
+        currPosition = prevPosition;  
+        System.out.printf("Bug played: CurrPosition set to %d, currDir set to %d\n", currPosition, currDir);
+    }
+
+    private void storePrevState(){
+        prevDir = currDir;
+        prevPosition = currPosition;
     }
 
     public void turn(String leftOrRight){
         int turnDirection = 1;
         if (leftOrRight.equals("left"))
             turnDirection = -1;
-        System.out.println(direction);
-        System.out.println(turnDirection);
-        direction = (direction+turnDirection+4)%4;
-        System.out.println("direction = " + direction);
+        storePrevState();
+        currDir = (currDir+turnDirection+4)%4;
     }
 
     public int getPosition() {
@@ -102,7 +106,7 @@ public class Turtle {
     }
 
     public int getDirection() {
-        return this.direction;
+        return this.currDir;
     }
 
     public void setPrevPosition(int currPosition){

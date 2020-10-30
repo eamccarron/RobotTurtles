@@ -4,14 +4,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import Controller.CardType;
-import Controller.TurtleMover;
+import Controller.Controller;
 
 public class CardChooserDialog extends JDialog {
     private CardStack stepForward;
@@ -19,7 +16,6 @@ public class CardChooserDialog extends JDialog {
     private CardStack turnRight;
     private CardStack bug;
     private JButton endTurn;
-    private int currentPlayer;
     private ImageIcon[] cardIcons;
 
     private final Dimension windowSize = new Dimension(600, 300);
@@ -47,7 +43,7 @@ public class CardChooserDialog extends JDialog {
         turnLeft.addActionListener(cardStackListener);
         turnRight.addActionListener(cardStackListener);
         bug.addActionListener(cardStackListener);
-        endTurn.addActionListener( e -> TurtleMover.onTurnEnded());
+        endTurn.addActionListener( e -> Controller.onTurnEnded());
         this.setSize(windowSize); 
         this.setLayout(new FlowLayout());
         this.add(stepForward);
@@ -62,10 +58,10 @@ public class CardChooserDialog extends JDialog {
     }
 
     private void loadIcons() throws IOException{
-        cardIcons[CardType.STEP_FORWARD.ordinal()] = new ImageIcon("Assets/StepForwardCard.png");
-        cardIcons[CardType.TURN_LEFT.ordinal()] = new ImageIcon("Assets/TurnLeftCard.png");
-        cardIcons[CardType.TURN_RIGHT.ordinal()] = new ImageIcon("Assets/TurnRightCard.png");
-        cardIcons[CardType.BUG.ordinal()] = new ImageIcon("Assets/BugCard.png");
+        cardIcons[CardType.STEP_FORWARD.ordinal()] = new ImageIcon("../Assets/StepForwardCard.png");
+        cardIcons[CardType.TURN_LEFT.ordinal()] = new ImageIcon("../Assets/TurnLeftCard.png");
+        cardIcons[CardType.TURN_RIGHT.ordinal()] = new ImageIcon("../Assets/TurnRightCard.png");
+        cardIcons[CardType.BUG.ordinal()] = new ImageIcon("../Assets/BugCard.png");
     }
 
     public void setStatus(String text){
@@ -74,7 +70,6 @@ public class CardChooserDialog extends JDialog {
 
     private void promptIllegalMove(){
         setStatus("Illegal move.  Try again.");
-        promptNextCard();
     }
 
     private void promptEndTurn(){
@@ -99,12 +94,18 @@ public class CardChooserDialog extends JDialog {
         public void actionPerformed(ActionEvent e) {
             assert e.getSource() instanceof CardStack; // This listener should only be used for cardStacks
             CardType cardChosen = ((CardStack) (e.getSource())).getCardType();
-            if(!TurtleMover.onCardChosen(cardChosen)){
-                promptIllegalMove();
+            if(!Controller.onCardChosen(cardChosen)){
+                System.out.println("Illegal Move");
+                CardChooserDialog.this.promptIllegalMove();
+                CardChooserDialog.this.promptNextCard();
+            }else if(cardChosen != CardType.BUG){  //Only prompt end turn if the bug card was not chosen
+                CardChooserDialog.this.promptEndTurn();
             }
-            CardChooserDialog.this.promptEndTurn();
         }
     }
+	public void promptWin(int number) {
+        setStatus(String.format("Player %d has won!", number));
+	}
 
 
 }

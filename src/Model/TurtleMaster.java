@@ -5,7 +5,6 @@ public class TurtleMaster {
     private boolean hasWon;
     Turtle turtle;
 
-
     public TurtleMaster(int playerID, Board board){
         turtle = new Turtle(playerID, board);
         this.playerNumber = playerID;
@@ -45,4 +44,11 @@ public class TurtleMaster {
 	public int getTurtleDirection() {
         return turtle.getDirection();
 	}
+
+	public void setHasWon() {
+        hasWon = true;
+    }
+    public boolean hasWon(){
+        return hasWon;
+    }
 }
