@@ -18,7 +18,7 @@ public class TurtleMover {
         int[] playerPositions = board.getPlayerPositions();
         TurtleMaster activePlayer = board.getActivePlayer();
 
-        view = new GameView(Board.BOARD_SIZE, playerPositions, layout); 
+        view = new GameView(Board.BOARD_SIZE, playerPositions, board.getPlayerDirections(), layout); 
         view.getNextCard(activePlayer.getNumber());
     }
 
@@ -31,7 +31,8 @@ public class TurtleMover {
         HashMap<Integer, TileType> layout = board.getTileLayout();
         TurtleMaster activePlayer = board.getActivePlayer();
         //Update state of model        
-        board.playTurn(cardChosen);
+        if(!board.playTurn(cardChosen))
+            return false;
         //Render new state in GameView
         view.updatePlayerPosition(activePlayer.getNumber(), activePlayer.getTurtlePosition());
         view.updatePlayerDirection(activePlayer.getNumber(), activePlayer.getTurtleDirection());

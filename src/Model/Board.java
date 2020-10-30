@@ -15,6 +15,7 @@ public class Board {
 
     //Variables for tracking game state
     private TurtleMaster[] players;
+    private boolean[] occupiedPositions = new boolean[BOARD_SIZE];
     private HashMap<Integer, TileType> layout = new HashMap<>();
 
     public Board(int numPlayers){
@@ -23,6 +24,19 @@ public class Board {
             players[i] = new TurtleMaster(i);
         }
     }
+
+    public boolean isPositionOccupied(int position){
+        return occupiedPositions[position];
+    }
+
+    public void setOccupied(int position){
+        occupiedPositions[position] = true;
+    }
+
+    public void setUnoccupied(int position){
+        occupiedPositions[position] = false;
+    }
+
 
     public TurtleMaster getActivePlayer(){
         return players[currentTurn];
@@ -35,7 +49,7 @@ public class Board {
 	public int[] getPlayerPositions() {
         int[] positions = new int[players.length];
         for(int i = 0; i < positions.length; i++){
-            positions[i] = players[i].turtle.getPosition();
+            positions[i] = players[i].getTurtlePosition();
         }
         return positions;
     }
@@ -53,4 +67,11 @@ public class Board {
         currentTurn++;
         if(currentTurn > 3) currentTurn = 0;
     }
+
+	public int[] getPlayerDirections() {
+        int[] directions = new int[players.length];
+        for(int i = 0; i < players.length; i++)
+            directions[i] = players[i].getTurtleDirection();
+        return directions;
+	}
 }

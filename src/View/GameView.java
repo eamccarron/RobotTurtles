@@ -16,7 +16,7 @@ public class GameView{
     private CardChooserDialog cardChooserDialog; 
     private BoardPanel boardPanel;
 
-    public GameView(int boardSize,  int[] playerPositions, HashMap<Integer, TileType> boardLayout){
+    public GameView(int boardSize,  int[] playerPositions, int[] playerDirections, HashMap<Integer, TileType> boardLayout){
         loadSprites();
 
         //Initialize window & layout manager
@@ -28,7 +28,7 @@ public class GameView{
         //Initialize the Card Chooser Dialog Window
         cardChooserDialog = new CardChooserDialog();
         
-        boardPanel = new BoardPanel(boardSize, playerPositions, boardLayout);
+        boardPanel = new BoardPanel(boardSize, playerPositions, playerDirections, boardLayout);
         
         window.setLayout(new BorderLayout());
         window.getContentPane().add(boardPanel, BorderLayout.CENTER);
@@ -63,6 +63,4 @@ public class GameView{
 	public void redraw() {
         boardPanel.repaint();
 	}
-
-    //The action listener for a card stack.  Generalized to be usable by a CardStack of any type.
 }

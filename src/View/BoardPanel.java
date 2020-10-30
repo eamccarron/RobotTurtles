@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.swing.*;
@@ -20,28 +21,30 @@ public class BoardPanel extends JPanel{
     private BufferedImage[] playerSprites;
     private BufferedImage[] tileSprites;
 
-    public BoardPanel(int boardSize, int[] playerPositions, HashMap<Integer, TileType> tileLayout){
+    public BoardPanel(int boardSize, int[] playerPositions, int[] playerDirections, HashMap<Integer, TileType> tileLayout){
         super();
         this.playerPositions = playerPositions;
-        this.playerDirections = new int[4];
+        this.playerDirections = playerDirections;
         this.tileLayout = tileLayout;
         this.boardSize = boardSize;
+
+        System.out.println(Arrays.toString(playerDirections));
         boardLength = (int)Math.floor(Math.sqrt(boardSize)); 
             
         playerSprites = new BufferedImage[4];
         tileSprites = new BufferedImage[TileType.values().length];
         try{
-        loadSprites();
+            loadSprites();
         } catch(IOException iOe){
             iOe.printStackTrace();
         }
     }
 
     private void loadSprites() throws IOException{
-        playerSprites[0] = ImageIO.read(new File("../Assets/Player_1.jpg"));
-        playerSprites[1] = ImageIO.read(new File("../Assets/Player_2.jpg"));
-        playerSprites[2] = ImageIO.read(new File("../Assets/Player_3.jpg"));
-        playerSprites[3] = ImageIO.read(new File("../Assets/Player_4.jpg"));
+        playerSprites[0] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_1.jpg")), 0, playerDirections[0]);
+        playerSprites[1] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_2.jpg")), 0, playerDirections[1]);;
+        playerSprites[2] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_3.jpg")), 0, playerDirections[2]);;
+        playerSprites[3] = rotatePlayerSprite(ImageIO.read(new File("../Assets/Player_4.jpg")), 0, playerDirections[3]);;
     }
  
     @Override
