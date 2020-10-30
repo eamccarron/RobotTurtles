@@ -71,9 +71,8 @@ public class Turtle {
             default:
                 newPosition = currPosition;
         }
-        prevPosition = currPosition;
+        storePrevState();
         currPosition = newPosition;
-        prevDir = currDir; //Make sure that turtle can not revert to a previous rotation by playing a bug card after moving
 
         System.out.printf("CurrPosition: %d, PrevPosition: %d\n", currPosition, prevPosition);
         board.setOccupied(currPosition);
@@ -84,16 +83,21 @@ public class Turtle {
     public void bug(){
         board.setUnoccupied(currPosition);
         board.setOccupied(prevPosition);
-        currPosition = prevPosition;
         currDir = prevDir;
+        currPosition = prevPosition;  
         System.out.printf("Bug played: CurrPosition set to %d, currDir set to %d\n", currPosition, currDir);
+    }
+
+    private void storePrevState(){
+        prevDir = currDir;
+        prevPosition = currPosition;
     }
 
     public void turn(String leftOrRight){
         int turnDirection = 1;
         if (leftOrRight.equals("left"))
             turnDirection = -1;
-        prevDir = currDir;
+        storePrevState();
         currDir = (currDir+turnDirection+4)%4;
     }
 

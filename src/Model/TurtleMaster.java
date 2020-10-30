@@ -44,4 +44,11 @@ public class TurtleMaster {
 	public int getTurtleDirection() {
         return turtle.getDirection();
 	}
+
+	public void setHasWon() {
+        hasWon = true;
+    }
+    public boolean hasWon(){
+        return hasWon;
+    }
 }

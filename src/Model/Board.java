@@ -12,16 +12,20 @@ public class Board {
     public final static int PLAYER_3 = 2;
     public final static int PLAYER_4 = 3;
     public static final int BOARD_SIZE = 64;
-
+    public static final int BOARD_LENGTH = (int)Math.floor(Math.sqrt(BOARD_SIZE));
+    private static final int[] MIDDLE_POSITIONS = {35, 36, 43, 44}; //TODO Calculate based on board size
     //Variables for tracking game state
     private TurtleMaster[] players;
     private boolean[] occupiedPositions = new boolean[BOARD_SIZE];
-    private HashMap<Integer, TileType> layout = new HashMap<>();
+    private HashMap<Integer, TileType> layout = new HashMap<>(BOARD_SIZE);
 
     public Board(int numPlayers){
         players = new TurtleMaster[numPlayers];
         for(int i = 0; i < numPlayers; i++){ 
             players[i] = new TurtleMaster(i, this);
+        }
+        for(int position : MIDDLE_POSITIONS){
+            layout.put(position, TileType.JEWEL);
         }
     }
 
@@ -37,6 +41,9 @@ public class Board {
         occupiedPositions[position] = false;
     }
 
+    public TileType getTile(int position){
+        return layout.getOrDefault(position, TileType.EMPTY);
+    }
 
     public TurtleMaster getActivePlayer(){
         return players[currentTurn];
@@ -55,16 +62,31 @@ public class Board {
     }
 
     public boolean playTurn(CardType card){
-        //TODO check for illegal moves
-        boolean successfulMove = players[currentTurn].onCardPlayed(card);
-        if (!successfulMove)
+        TurtleMaster activePlayer = this.getActivePlayer();
+        if(!activePlayer.onCardPlayed(card))
             return false;
+        
+        int playerPos = activePlayer.getTurtlePosition();
+        if(this.getTile(playerPos) == TileType.JEWEL)
+            activePlayer.setHasWon();
+        
         return true;
-    }
+        }
 
     public void onTurnEnded(){
-        currentTurn++;
-        if(currentTurn > 3) currentTurn = 0;
+        //Check if all players have won
+        boolean gameOver = true;
+        for(TurtleMaster player : players){
+            gameOver = gameOver && player.hasWon();
+        }
+        //If all players have won, end game
+        if(gameOver){
+            return; //TODO instantiate new game
+        }
+
+        do{ 
+            currentTurn = (currentTurn + 1) % 4;
+        }while(getActivePlayer().hasWon());
     }
 
 	public int[] getPlayerDirections() {

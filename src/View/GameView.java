@@ -63,4 +63,8 @@ public class GameView{
 	public void redraw() {
         boardPanel.repaint();
 	}
+
+	public void promptWin(int number) {
+        cardChooserDialog.promptWin(number);
+	}
 }

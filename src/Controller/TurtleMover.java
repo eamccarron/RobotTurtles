@@ -40,6 +40,8 @@ public class TurtleMover {
         view.redraw();
         if(cardChosen == CardType.BUG) //If the bug card was chosen, prompt the player to choose a new move
             view.getNextCard(activePlayer.getNumber());
+        if(activePlayer.hasWon())
+            view.promptWin(activePlayer.getNumber());
         return true;
     }
 

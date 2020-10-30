@@ -107,6 +107,9 @@ public class CardChooserDialog extends JDialog {
             }
         }
     }
+	public void promptWin(int number) {
+        setStatus(String.format("Player %d has won!", number));
+	}
 
 
 }
