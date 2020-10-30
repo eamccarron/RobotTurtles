@@ -11,8 +11,9 @@ public class Turtle {
     private static final int SOUTH = 2;
     private static final int WEST = 3;
     private int direction;
+    private Board board;
 
-    public Turtle(int playerID){
+    public Turtle(int playerID, Board board){
         this.playerID  = playerID;
         //Place players clockwise in 4 corners of board
         switch(this.playerID){
@@ -35,26 +36,44 @@ public class Turtle {
     }
 
     public boolean moveForward(){
+        int newPosition;
         switch(direction){
             case NORTH:
                 if (currPosition<boardLength)
                     return false;
-                currPosition -= boardLength;
+                newPosition = currPosition - boardLength;
+                if (board.isPositionOccupied(newPosition))
+                    return false;
+                prevPosition = currPosition;
+                currPosition = newPosition;
                 break;
             case EAST:
                 if (currPosition%boardLength == 7)
                     return false;
-                currPosition += 1;
+                newPosition = currPosition  + 1;
+                if (board.isPositionOccupied(newPosition))
+                    return false;
+                prevPosition = currPosition;
+                currPosition = newPosition;
                 break;
             case SOUTH:
                 if (currPosition >= Board.BOARD_SIZE-boardLength)
                     return false;
                 currPosition += boardLength;
+                newPosition = currPosition + boardLength;
+                if (board.isPositionOccupied(newPosition))
+                    return false;
+                prevPosition = currPosition;
+                currPosition = newPosition;
                 break;
             case WEST:
                 if (currPosition%boardLength == 0)
                     return false;
-                currPosition -= 1;
+                newPosition = currPosition  - 1;
+                if (board.isPositionOccupied(newPosition))
+                    return false;
+                prevPosition = currPosition;
+                currPosition = newPosition;
                 break;
         }
         return true;
@@ -68,7 +87,10 @@ public class Turtle {
         int turnDirection = 1;
         if (leftOrRight.equals("left"))
             turnDirection = -1;
-        direction = (direction+turnDirection)%4;
+        System.out.println(direction);
+        System.out.println(turnDirection);
+        direction = (direction+turnDirection+4)%4;
+        System.out.println("direction = " + direction);
     }
 
     public int getPosition() {

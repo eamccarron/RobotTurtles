@@ -4,5 +4,4 @@ package Controller;
 public enum TileType {
     EMPTY,
     JEWEL,
-    STONE_WALL,
 }

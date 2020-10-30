@@ -2,11 +2,11 @@ package Model;
 import Controller.CardType;
 public class TurtleMaster {
     private int playerNumber;
+    private boolean hasWon;
     Turtle turtle;
 
-
-    public TurtleMaster(int playerID){
-        turtle = new Turtle(playerID);
+    public TurtleMaster(int playerID, Board board){
+        turtle = new Turtle(playerID, board);
         this.playerNumber = playerID;
     }
 
