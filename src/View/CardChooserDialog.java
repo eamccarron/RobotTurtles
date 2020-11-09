@@ -38,11 +38,10 @@ public class CardChooserDialog extends JDialog {
 
         endTurn = new JButton("End Turn");
 
-        CardStackListener cardStackListener = new CardStackListener();
-        stepForward.addActionListener(cardStackListener);
-        turnLeft.addActionListener(cardStackListener);
-        turnRight.addActionListener(cardStackListener);
-        bug.addActionListener(cardStackListener);
+        Controller.registerCardStack(stepForward);
+        Controller.registerCardStack(turnLeft);
+        Controller.registerCardStack(turnRight);
+        Controller.registerCardStack(bug);
         endTurn.addActionListener( e -> Controller.onTurnEnded());
         this.setSize(windowSize); 
         this.setLayout(new FlowLayout());
@@ -68,11 +67,11 @@ public class CardChooserDialog extends JDialog {
         this.setTitle(text);
     }
 
-    private void promptIllegalMove(){
+    public void promptIllegalMove(){
         setStatus("Illegal move.  Try again.");
     }
 
-    private void promptEndTurn(){
+    public void promptEndTurn(){
         stepForward.setVisible(false); 
         turnLeft.setVisible(false);
         turnRight.setVisible(false);
@@ -89,20 +88,6 @@ public class CardChooserDialog extends JDialog {
         endTurn.setVisible(false);
         bug.setVisible(false);
 	}
-    private class CardStackListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            assert e.getSource() instanceof CardStack; // This listener should only be used for cardStacks
-            CardType cardChosen = ((CardStack) (e.getSource())).getCardType();
-            if(!Controller.onCardChosen(cardChosen)){
-                System.out.println("Illegal Move");
-                CardChooserDialog.this.promptIllegalMove();
-                CardChooserDialog.this.promptNextCard();
-            }else if(cardChosen != CardType.BUG){  //Only prompt end turn if the bug card was not chosen
-                CardChooserDialog.this.promptEndTurn();
-            }
-        }
-    }
 	public void promptWin(int number) {
         setStatus(String.format("Player %d has won!", number));
 	}

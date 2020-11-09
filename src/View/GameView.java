@@ -21,7 +21,6 @@ public class GameView{
 
     //Initializes a new game view based on the game parameters which are determined by the Controller.
     public GameView(int boardSize,  int[] playerPositions, int[] playerDirections, HashMap<Integer, TileType> boardLayout){
-        loadSprites();
 
         //Initialize window & layout manager
         window = new JFrame("Robot Turtles alpha");
@@ -40,10 +39,6 @@ public class GameView{
         window.setVisible(true);
         window.setResizable(false);
         cardChooserDialog.setVisible(true);
-    }
-
-    private void loadSprites(){
-        //TODO load sprites
     }
 
     //Creates a dialog which prompts the current player to choose a card from a card stack
@@ -86,9 +81,16 @@ public class GameView{
         JButton playAgain = new JButton("Play Again?");
         playAgain.setVisible(true);
 
-        playAgain.addActionListener(e -> Controller.initGame());
-
+        //TODO fix endgame!!
         window.getContentPane().add(endGameStatus, BorderLayout.CENTER);
         window.getContentPane().add(playAgain, BorderLayout.SOUTH);
+	}
+
+	public void promptIllegalMove() {
+        cardChooserDialog.promptIllegalMove();
+	}
+
+	public void promptEndTurn() {
+        cardChooserDialog.promptEndTurn();
 	}
 }

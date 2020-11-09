@@ -1,20 +1,20 @@
 package Model;
 import Controller.CardType;
-public class TurtleMaster {
+
+//Class representing the player in a game.  Responsible for translating a card into either an illegal move or 
+//appropriate state change for the turtle it is controlling.
+public class TurtleMaster implements CardPlayer{
     private int playerNumber;
     private boolean hasWon;
     Turtle turtle;
 
-    public TurtleMaster(int playerID, Board board){
-        turtle = new Turtle(playerID, board);
+    public TurtleMaster(int playerID, Turtle turtle){
+        this.turtle = turtle; 
         this.playerNumber = playerID;
     }
 
     //Return false if move is illegal or if there are not enough cards remaining.
     public boolean onCardPlayed(CardType card){
-        //TODO Implement rotations
-        //TODO update hand
-        //TODO Check if move is illegal (enough cards?)
         switch(card){
             case STEP_FORWARD:
                 return turtle.moveForward();
@@ -35,14 +35,6 @@ public class TurtleMaster {
 
 	public int getNumber() {
 		return playerNumber;
-	}
-
-	public int getTurtlePosition() {
-		return turtle.getPosition();
-    }
-
-	public int getTurtleDirection() {
-        return turtle.getDirection();
 	}
 
 	public void setHasWon() {

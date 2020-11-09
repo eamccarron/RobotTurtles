@@ -1,56 +1,97 @@
 package Controller;
 
 import View.GameView;
-import Model.*;
+import View.CardStack;
 
+import Model.BoardManager;
+import Model.CardPlayer;
+import Model.TurnManager;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.AbstractButton;
+
 //The main controller for the game, responsible for main game loop and tracking turns.
 public class Controller {
+    public static final int BOARD_SIZE = 64;
     private static GameView view;
-    private static Board board;
-    private static final int NUM_PLAYERS = 4;
+    private static BoardManager board;
+    private static TurnManager turnManager;
 
+    private static final int NUM_PLAYERS = 4;
+    private static ArrayList<Integer> winOrder = new ArrayList<>(NUM_PLAYERS);
     //Start event driven game loop by initializing a new game
-    public static void main(String[] args) { Controller.initGame(); }
 
     //Initializes a new game by instantiating a board and a view.
-    public static void initGame(){
-        board = new Board(NUM_PLAYERS);
+    public static void initGame(BoardManager board, TurnManager turnManager){
         HashMap<Integer, TileType> layout = board.getTileLayout();
         int[] playerPositions = board.getPlayerPositions();
-        TurtleMaster activePlayer = board.getActivePlayer();
+        Controller.board = board;
+        Controller.turnManager = turnManager;
+        view = new GameView(BOARD_SIZE, playerPositions, board.getPlayerDirections(), layout); 
+        view.getNextCard(turnManager.getActivePlayerNumber());
+    }
 
-        view = new GameView(Board.BOARD_SIZE, playerPositions, board.getPlayerDirections(), layout); 
-        view.getNextCard(activePlayer.getNumber());
+    public static void registerCardStack(CardStack cardStack){
+        CardStackListener listener = new CardStackListener();
+        cardStack.addActionListener(listener);
     }
 
     //The handler function for when a card is chosen.  This is called whenever a CardStack is clicked.
-    public static boolean onCardChosen(CardType cardChosen) {
-        HashMap<Integer, TileType> layout = board.getTileLayout(); //Update tileLayout (in case in a future version there are tiles that can be moved)
-        TurtleMaster activePlayer = board.getActivePlayer();
-        //Update state of model        
-        if(!board.playTurn(cardChosen)) //Check to see if the card chosen is a valid move.t 
+    private static boolean onCardChosen(CardType cardChosen) {
+        CardPlayer activePlayer = turnManager.getActivePlayer();
+        int activePlayerNum = turnManager.getActivePlayerNumber();
+
+        if(!activePlayer.onCardPlayed(cardChosen))
             return false;
+
+        int playerPos = board.getPlayerPositions()[turnManager.getActivePlayerNumber()];
+        if(board.getTile(playerPos) == TileType.JEWEL){
+            activePlayer.setHasWon();
+            view.promptWin(activePlayerNum);
+            winOrder.add(turnManager.getActivePlayerNumber());
+        }
+        //Retrieve updated game state from board.
+        HashMap<Integer, TileType> layout = board.getTileLayout();
+        int[] playerPositions = board.getPlayerPositions();
+        int[] playerDirections = board.getPlayerDirections();
+
+        if(cardChosen == CardType.BUG) //If the bug card was chosen, prompt the player to choose a new move
+            view.getNextCard(activePlayerNum);
+
         //Render new state in GameView
-        view.updatePlayerPosition(activePlayer.getNumber(), activePlayer.getTurtlePosition());
-        view.updatePlayerDirection(activePlayer.getNumber(), activePlayer.getTurtleDirection());
+        view.updatePlayerPosition(activePlayerNum, playerPositions[activePlayerNum]);
+        view.updatePlayerDirection(activePlayerNum, playerDirections[activePlayerNum]);
         view.updateTiles(layout);
         view.redraw();
-        if(cardChosen == CardType.BUG) //If the bug card was chosen, prompt the player to choose a new move
-            view.getNextCard(activePlayer.getNumber());
-        if(activePlayer.hasWon())
-            view.promptWin(activePlayer.getNumber());
         return true;
     }
 
+    private static class CardStackListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            assert e.getSource() instanceof CardStack; // This listener should only be used for cardStacks
+            CardType cardChosen = ((CardStack) (e.getSource())).getCardType();
+            System.out.println(cardChosen);
+            if(!Controller.onCardChosen(cardChosen)){
+                System.out.println("Illegal Move");
+                view.promptIllegalMove();
+                view.getNextCard(turnManager.getActivePlayer().getNumber());
+            }else if(cardChosen != CardType.BUG){  //Only prompt end turn if the bug card was not chosen
+                view.promptEndTurn();
+            }
+        }
+    }
+
 	public static void onTurnEnded() {
-        board.onTurnEnded();
-        view.getNextCard(board.getActivePlayer().getNumber());
+        turnManager.endTurn();
+        view.getNextCard(turnManager.getActivePlayer().getNumber());
 	}
 
-	public static void onGameEnded(ArrayList<Integer> winOrder) {
+	public static void onGameEnded() {
         view.showEndGameScreen(winOrder);
 	}
 }

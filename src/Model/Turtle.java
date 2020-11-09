@@ -19,19 +19,19 @@ public class Turtle {
         this.board = board;
         //Place players clockwise in 4 corners of board facing center
         switch(this.playerID){
-            case Board.PLAYER_1:
+            case TurtleMover.PLAYER_1:
                 currPosition = prevPosition = 0;
                 currDir = prevDir = SOUTH;
                 break;
-            case Board.PLAYER_2:
+            case TurtleMover.PLAYER_2:
                 currPosition = prevPosition = 7;
                 currDir = prevDir = SOUTH;
                 break;
-            case Board.PLAYER_3:
+            case TurtleMover.PLAYER_3:
                 currPosition = prevPosition = 63;
                 currDir = prevDir = NORTH;
                 break;
-            case Board.PLAYER_4:
+            case TurtleMover.PLAYER_4:
                 currPosition = prevPosition = 56;
                 currDir = prevDir = NORTH;
         }

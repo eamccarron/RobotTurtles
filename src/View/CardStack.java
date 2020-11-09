@@ -1,6 +1,7 @@
 package View;
 
 import Controller.CardType;
+import Controller.Controller;
 
 import javax.swing.*;
 
