@@ -81,7 +81,6 @@ public class GameView{
         JButton playAgain = new JButton("Play Again?");
         playAgain.setVisible(true);
 
-        //TODO fix endgame!!
         window.getContentPane().add(endGameStatus, BorderLayout.CENTER);
         window.getContentPane().add(playAgain, BorderLayout.SOUTH);
 	}
