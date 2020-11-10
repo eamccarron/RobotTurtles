@@ -12,11 +12,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.AbstractButton;
 
 //The main controller for the game, responsible for main game loop and determining win conditions 
 public class Controller {
-    public static final int BOARD_SIZE = 64;
     private static GameView view;
     private static BoardManager board;
     private static TurnManager turnManager;
@@ -31,7 +29,7 @@ public class Controller {
         int[] playerPositions = board.getPlayerPositions();
         Controller.board = board;
         Controller.turnManager = turnManager;
-        view = new GameView(BOARD_SIZE, playerPositions, board.getPlayerDirections(), layout); 
+        view = new GameView(board.getBoardSize(), playerPositions, board.getPlayerDirections(), layout); 
         view.getNextCard(turnManager.getActivePlayerNumber());
     }
 

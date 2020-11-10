@@ -1,25 +1,20 @@
 package Model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import Controller.TileType;
-import Controller.CardType;
 import Controller.Controller;
 
 public class Board implements BoardManager{
-
     public static final int BOARD_SIZE = 64;
     public static final int BOARD_LENGTH = (int)Math.floor(Math.sqrt(BOARD_SIZE));
     private static final int[] MIDDLE_POSITIONS = {27, 28, 35, 36}; //TODO Calculate based on board size
     //Variables for tracking game state
     private boolean[] occupiedPositions = new boolean[BOARD_SIZE];
-    private ArrayList<Integer> winOrder;
     private HashMap<Integer, TileType> layout = new HashMap<>(BOARD_SIZE);
     private Turtle[] turtles = new Turtle[4];
 
     public Board(int numPlayers){
-        winOrder = new ArrayList<>(numPlayers);
         for(int i = 0; i < numPlayers; i++){ 
             turtles[i] = new Turtle(i, this);
         }
@@ -79,4 +74,9 @@ public class Board implements BoardManager{
             directions[i] = turtles[i].getDirection();
         return directions;
 	}
+
+    @Override
+    public int getBoardSize() {
+        return BOARD_SIZE;
+    }
 }
