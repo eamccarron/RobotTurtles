@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 import javax.swing.AbstractButton;
 
-//The main controller for the game, responsible for main game loop and tracking turns.
+//The main controller for the game, responsible for main game loop and determining win conditions 
 public class Controller {
     public static final int BOARD_SIZE = 64;
     private static GameView view;

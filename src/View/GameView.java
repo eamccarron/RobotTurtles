@@ -13,7 +13,7 @@ import Controller.*;
 public class GameView{
     Controller controller;
     //Dimensions
-    private final Dimension windowSize = new Dimension(1000,1000);
+    private final Dimension windowSize = new Dimension(800,800);
     //GUI Elements
     private JFrame window;
     private CardChooserDialog cardChooserDialog; 
@@ -37,7 +37,7 @@ public class GameView{
         window.getContentPane().add(boardPanel, BorderLayout.CENTER);
 
         window.setVisible(true);
-        window.setResizable(false);
+        window.setResizable(true);
         cardChooserDialog.setVisible(true);
     }
 
