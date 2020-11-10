@@ -10,6 +10,7 @@ import java.io.IOException;
 import Controller.CardType;
 import Controller.Controller;
 
+//Responsible for displaying the options a player has during any point in their turn.
 public class CardChooserDialog extends JDialog {
     private CardStack stepForward;
     private CardStack turnLeft;

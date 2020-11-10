@@ -2,7 +2,7 @@ package Model;
 
 import Controller.Controller;
 
-//A Class representing the "TurtleMover" of the game, which is responsible for tracking the players and current active player.
+//A Class representing the "TurtleMover" of the game, which is responsible for tracking the players and their turns.
 public class TurtleMover implements TurnManager{
     public static final int NUM_PLAYERS = 4;
     public final static int PLAYER_1 = 0;
@@ -37,11 +37,13 @@ public class TurtleMover implements TurnManager{
         //If all players have won, end game
         if(gameOver){
             Controller.onGameEnded(); 
+            return;
         }
 
         do{ 
             currentTurn = (currentTurn + 1) % 4;
         }while(getActivePlayer().hasWon());
+
 	}
 
     @Override
