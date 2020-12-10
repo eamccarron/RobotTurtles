@@ -29,8 +29,8 @@ public class Board implements BoardManager{
         Turtle[] turtles = board.getTurtles();
         for(int i = 0; i < TurtleMover.NUM_PLAYERS; i++)
             turtleMover.addPlayer(turtles[i], i);
-
-        Controller.initGame(board, turtleMover);
+        Controller controller = Controller.getInstance();
+        controller.initGame(board, turtleMover);
     }
 
     //This method is used only for the instantiation of a TurnManager in the main method.

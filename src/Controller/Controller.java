@@ -15,31 +15,41 @@ import java.util.HashMap;
 
 //The main controller for the game, responsible for main game loop and determining win conditions 
 public class Controller {
-    private static GameView view;
-    private static BoardManager board;
-    private static TurnManager turnManager;
+    private GameView view;
+    private BoardManager board;
+    private TurnManager turnManager;
 
     private static final int NUM_PLAYERS = 4;
     private static ArrayList<Integer> winOrder = new ArrayList<>(NUM_PLAYERS);
+    private static Controller instance;
     //Start event driven game loop by initializing a new game
 
+    private Controller(){};
+
+    public static Controller getInstance(){
+        if (instance == null) {
+            instance = new Controller();
+        }
+        return instance;
+    }
+
     //Initializes a new game by instantiating a board and a view.
-    public static void initGame(BoardManager board, TurnManager turnManager){
+    public void initGame(BoardManager board, TurnManager turnManager){
         HashMap<Integer, TileType> layout = board.getTileLayout();
         int[] playerPositions = board.getPlayerPositions();
-        Controller.board = board;
-        Controller.turnManager = turnManager;
+        this.board = board;
+        this.turnManager = turnManager;
         view = new GameView(board.getBoardSize(), playerPositions, board.getPlayerDirections(), layout); 
         view.getNextCard(turnManager.getActivePlayerNumber());
     }
 
-    public static void registerCardStack(CardStack cardStack){
+    public void registerCardStack(CardStack cardStack){
         CardStackListener listener = new CardStackListener();
         cardStack.addActionListener(listener);
     }
 
     //The handler function for when a card is chosen.  This is called whenever a CardStack is clicked.
-    private static boolean onCardChosen(CardType cardChosen) {
+    private boolean onCardChosen(CardType cardChosen) {
         CardPlayer activePlayer = turnManager.getActivePlayer();
         int activePlayerNum = turnManager.getActivePlayerNumber();
 
@@ -68,13 +78,14 @@ public class Controller {
         return true;
     }
 
-    private static class CardStackListener implements ActionListener {
+    private class CardStackListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             assert e.getSource() instanceof CardStack; // This listener should only be used for cardStacks
             CardType cardChosen = ((CardStack) (e.getSource())).getCardType();
             System.out.println(cardChosen);
-            if(!Controller.onCardChosen(cardChosen)){
+            Controller controller = getInstance();
+            if(!controller.onCardChosen(cardChosen)){
                 System.out.println("Illegal Move");
                 view.promptIllegalMove();
                 view.getNextCard(turnManager.getActivePlayer().getNumber());
@@ -84,12 +95,12 @@ public class Controller {
         }
     }
 
-	public static void onTurnEnded() {
+	public void onTurnEnded() {
         turnManager.endTurn();
         view.getNextCard(turnManager.getActivePlayer().getNumber());
 	}
 
-	public static void onGameEnded() {
+	public void onGameEnded() {
         view.showEndGameScreen(winOrder);
 	}
 }

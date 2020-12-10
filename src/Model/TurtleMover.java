@@ -10,11 +10,12 @@ public class TurtleMover implements TurnManager{
     public final static int PLAYER_3 = 2;
     public final static int PLAYER_4 = 3;
 
+    public Controller controller;
     private TurtleMaster[] players = new TurtleMaster[NUM_PLAYERS];
     private int currentTurn = PLAYER_1;
     
     public TurtleMover(){
-        
+        controller = Controller.getInstance();
     }
 
 	@Override
@@ -36,13 +37,15 @@ public class TurtleMover implements TurnManager{
         }
         //If all players have won, end game
         if(gameOver){
-            Controller.onGameEnded(); 
+            controller.onGameEnded();
             return;
         }
 
         do{ 
             currentTurn = (currentTurn + 1) % 4;
         }while(getActivePlayer().hasWon());
+
+
 
 	}
 

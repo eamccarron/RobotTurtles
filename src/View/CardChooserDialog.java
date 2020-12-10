@@ -39,11 +39,12 @@ public class CardChooserDialog extends JDialog {
 
         endTurn = new JButton("End Turn");
 
-        Controller.registerCardStack(stepForward);
-        Controller.registerCardStack(turnLeft);
-        Controller.registerCardStack(turnRight);
-        Controller.registerCardStack(bug);
-        endTurn.addActionListener( e -> Controller.onTurnEnded());
+        Controller controller = Controller.getInstance();
+        controller.registerCardStack(stepForward);
+        controller.registerCardStack(turnLeft);
+        controller.registerCardStack(turnRight);
+        controller.registerCardStack(bug);
+        endTurn.addActionListener( e -> controller.onTurnEnded());
         this.setSize(windowSize); 
         this.setLayout(new FlowLayout());
         this.add(stepForward);
