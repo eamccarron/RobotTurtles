@@ -4,6 +4,7 @@ public class Jewel extends Tile{
 
     public Jewel() {
         super(true, false);
+        this.setTileType(TileType.JEWEL);
     }
 
     @Override

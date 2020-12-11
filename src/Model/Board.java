@@ -2,7 +2,6 @@ package Model;
 
 import java.util.HashMap;
 
-import Controller.TileType;
 import Controller.Controller;
 
 public class Board implements BoardManager{

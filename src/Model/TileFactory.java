@@ -1,7 +1,5 @@
 package Model;
 
-import Controller.TileType;
-
 public class TileFactory {
 
     public Tile createTile(TileType type) {

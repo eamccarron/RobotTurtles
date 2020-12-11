@@ -4,6 +4,7 @@ public class IceWall extends Tile{
 
     public IceWall() {
         super(false, false);
+        this.setTileType(TileType.ICE_WALL);
     }
 
     public void melt(){

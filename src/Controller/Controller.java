@@ -1,11 +1,8 @@
 package Controller;
 
+import Model.*;
 import View.GameView;
 import View.CardStack;
-
-import Model.BoardManager;
-import Model.CardPlayer;
-import Model.TurnManager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +21,7 @@ public class Controller {
     private static Controller instance;
     //Start event driven game loop by initializing a new game
 
-    private Controller(){};
+    private Controller(){}
 
     public static Controller getInstance(){
         if (instance == null) {
@@ -35,7 +32,7 @@ public class Controller {
 
     //Initializes a new game by instantiating a board and a view.
     public void initGame(BoardManager board, TurnManager turnManager){
-        HashMap<Integer, TileType> layout = board.getTileLayout();
+        HashMap<Integer, Tile> layout = board.getTileLayout();
         int[] playerPositions = board.getPlayerPositions();
         this.board = board;
         this.turnManager = turnManager;
@@ -57,13 +54,13 @@ public class Controller {
             return false;
 
         int playerPos = board.getPlayerPositions()[turnManager.getActivePlayerNumber()];
-        if(board.getTile(playerPos) == TileType.JEWEL){
+        if(board.getTile(playerPos) instanceof Jewel){
             activePlayer.setHasWon();
             view.promptWin(activePlayerNum);
             winOrder.add(turnManager.getActivePlayerNumber());
         }
         //Retrieve updated game state from board.
-        HashMap<Integer, TileType> layout = board.getTileLayout();
+        HashMap<Integer, Tile> layout = board.getTileLayout();
         int[] playerPositions = board.getPlayerPositions();
         int[] playerDirections = board.getPlayerDirections();
 

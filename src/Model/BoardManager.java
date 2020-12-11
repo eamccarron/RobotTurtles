@@ -2,8 +2,6 @@ package Model;
 
 import java.util.HashMap;
 
-import Controller.TileType;
-
 public interface BoardManager {
     public int[] getPlayerPositions();
     public int[] getPlayerDirections();

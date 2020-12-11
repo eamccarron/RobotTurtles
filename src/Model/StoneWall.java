@@ -5,6 +5,7 @@ public class StoneWall extends Tile{
 
     public StoneWall() {
         super(false, false);
+        this.setTileType(TileType.STONE_WALL);
     }
 
     @Override
