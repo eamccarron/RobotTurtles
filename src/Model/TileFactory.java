@@ -1,0 +1,22 @@
+package Model;
+
+import Controller.TileType;
+
+public class TileFactory {
+
+    public Tile createTile(TileType type) {
+        switch (type) {
+            case REGULAR:
+                return new RegularTile();
+            case ICE_WALL:
+                return new IceWall();
+            case STONE_WALL:
+                return new StoneWall();
+            case JEWEL:
+                return new Jewel();
+            default:
+                System.out.println("Tile type not found");
+                return null;
+        }
+    }
+}
