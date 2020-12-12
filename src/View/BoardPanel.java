@@ -21,9 +21,12 @@ public class BoardPanel extends JPanel implements BoardSubscriber, PlayerSubscri
     private int boardLength; //Assume square board so length = with
     private int[] playerPositions;
     private int[] playerDirections;
+    private int activePlayer = 0;
     private HashMap<Integer, Tile> tileLayout;
     private BufferedImage[] playerSprites;
     private BufferedImage[] tileSprites;
+
+    private static final int NUM_PADDING = 10;
 
     public BoardPanel(int boardSize, int[] playerPositions, int[] playerDirections, HashMap<Integer, Tile> tileLayout){
         super();
@@ -95,6 +98,13 @@ public class BoardPanel extends JPanel implements BoardSubscriber, PlayerSubscri
             int playerX = (pos % boardLength) * cellWidth;
             int playerY = (pos / boardLength) * cellHeight;
             g2d.drawImage(playerSprites[i], playerX, playerY, null);
+            if(i == activePlayer){
+                g2d.setColor(Color.GREEN);
+                g2d.drawString(Integer.toString(i + 1), playerX + NUM_PADDING, playerY + NUM_PADDING);
+                g2d.setColor(Color.BLACK);
+            }else{
+                g2d.drawString(Integer.toString(i + 1), playerX + NUM_PADDING, playerY + NUM_PADDING);
+            }
         }
     }
 
@@ -132,5 +142,9 @@ public class BoardPanel extends JPanel implements BoardSubscriber, PlayerSubscri
     @Override
     public void onTilesUpdated(HashMap<Integer, Tile> tileLayout) {
 
+    }
+
+    public void highlightPlayer(int playerID) {
+        activePlayer = playerID;
     }
 }
