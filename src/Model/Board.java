@@ -1,10 +1,16 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import Controller.Controller;
 
-public class Board implements BoardManager{
+import Controller.BoardSubscriber;
+import Controller.BoardManager;
+
+//Subject for BoardSubscribers
+//SINGLETON
+public class Board implements BoardManager {
     public static final int BOARD_SIZE = 64;
     public static final int BOARD_LENGTH = (int)Math.floor(Math.sqrt(BOARD_SIZE));
     private static final TileType[] initialBoardLayout1 =
@@ -20,6 +26,14 @@ public class Board implements BoardManager{
     private boolean[] occupiedPositions = new boolean[BOARD_SIZE];
     private HashMap<Integer, Tile> layout = new HashMap<>(BOARD_SIZE);
     private Turtle[] turtles = new Turtle[4];
+    private ArrayList<BoardSubscriber> subscribers = new ArrayList<>();
+    private static Board instance;
+
+    public static Board getInstance(){
+        if(instance == null)
+            instance = new Board(TurtleMover.NUM_PLAYERS);
+        return instance;
+    }
 
     public Board(int numPlayers){
         TileFactory tileFactory = new TileFactory();
@@ -50,7 +64,7 @@ public class Board implements BoardManager{
 
     public static void main(String[] args){
         TurtleMover turtleMover = new TurtleMover();
-        Board board = new Board(TurtleMover.NUM_PLAYERS);
+        Board board = getInstance();
         Turtle[] turtles = board.getTurtles();
         for(int i = 0; i < TurtleMover.NUM_PLAYERS; i++)
             turtleMover.addPlayer(turtles[i], i);
@@ -58,8 +72,7 @@ public class Board implements BoardManager{
         controller.initGame(board, turtleMover);
     }
 
-    //This method is used only for the instantiation of a TurnManager in the main method.
-    private Turtle[] getTurtles(){
+    public Turtle[] getTurtles(){
         return turtles;
     }
 
@@ -79,6 +92,9 @@ public class Board implements BoardManager{
         return layout.get(position);
     }
 
+    public void addSubscriber(BoardSubscriber subscriber){
+        this.subscribers.add(subscriber);
+    }
 
 	public HashMap<Integer, Tile> getTileLayout() {
         return this.layout;
