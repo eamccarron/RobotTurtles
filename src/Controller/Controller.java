@@ -117,6 +117,24 @@ public class Controller {
             return false;
         }
 
+        switch(cardChosen){
+            case BUG:
+                return true; //Do not prompt endTurn for a bug card
+            case FUNCTION_FROG:
+                if(!functionStored[turnManager.getActivePlayer().getNumber()])
+                    view.promptFunctionFrog();
+                else
+                    view.promptEndTurn();
+                break;
+            default:
+                if(!writeProgramEnabled && !functionFrogActive) { //If write program enabled, do not promptEndTurn;
+                    if (playThreeEnabled && cardsChosen.size() == 3)
+                        view.promptEndTurn();
+                    else if (!playThreeEnabled)
+                        view.promptEndTurn();
+                }
+        }
+
         int playerPos = board.getPlayerPositions()[turnManager.getActivePlayerNumber()];
         if(board.getTile(playerPos) instanceof Jewel){
             activePlayer.setHasWon();
@@ -145,23 +163,6 @@ public class Controller {
                 view.getNextCard(turnManager.getActivePlayer().getNumber());
             }
             //Determine if endTurn should be prompted
-            switch(cardChosen){
-                case BUG:
-                    return; //Do not prompt endTurn for a bug card
-                case FUNCTION_FROG:
-                    if(!functionStored[turnManager.getActivePlayer().getNumber()])
-                        view.promptFunctionFrog();
-                    else
-                        view.promptEndTurn();
-                    break;
-                default:
-                    if(!writeProgramEnabled && !functionFrogActive) { //If write program enabled, do not promptEndTurn;
-                        if (playThreeEnabled && cardsChosen.size() == 3)
-                            view.promptEndTurn();
-                        else if (!playThreeEnabled)
-                            view.promptEndTurn();
-                    }
-            }
         }
     }
 
