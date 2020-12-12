@@ -7,7 +7,7 @@ public class IceWall extends Tile{
         this.setTileType(TileType.ICE_WALL);
     }
 
-    public void melt(){
+    public void getHitByLaser(){
         setVacancy(true);
     }
 

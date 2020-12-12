@@ -42,4 +42,6 @@ public abstract class Tile {
     public void setTileType(TileType type){
         this.tileType = type;
     }
+
+    public void getHitByLaser(){};
 }
