@@ -53,7 +53,13 @@ public class BoardPanel extends JPanel implements BoardSubscriber, PlayerSubscri
         playerSprites[2] = rotatePlayerSprite(ImageIO.read(new File("Assets/Player_3.jpg")), 0, playerDirections[2]);
         playerSprites[3] = rotatePlayerSprite(ImageIO.read(new File("Assets/Player_4.jpg")), 0, playerDirections[3]);
 
+        tileSprites[TileType.ICE_WALL.ordinal()] = ImageIO.read(new File("Assets/IceWall.png"));
+        tileSprites[TileType.STONE_WALL.ordinal()] = ImageIO.read(new File("Assets/StoneWall.png"));
+        tileSprites[TileType.CRATE.ordinal()] = ImageIO.read(new File("Assets/Crate.png"));
+        tileSprites[TileType.ICE_WALL.ordinal()] = ImageIO.read(new File("Assets/IceWall.png"));
+        tileSprites[TileType.PORTAL.ordinal()] = ImageIO.read(new File("Assets/Portal.png"));
         tileSprites[TileType.JEWEL.ordinal()] = ImageIO.read(new File("Assets/Jewel.png"));
+        tileSprites[TileType.PUDDLE.ordinal()] = ImageIO.read(new File("Assets/Puddle.png"));
     }
  
     @Override
@@ -87,6 +93,10 @@ public class BoardPanel extends JPanel implements BoardSubscriber, PlayerSubscri
                 int tileY = (i / boardLength) * cellHeight;
 
                 g2d.drawImage(tileSprites[tile.ordinal()], tileX, tileY, null);
+                if(tileLayout.get(i).hasCrate()) {
+                    System.out.println("Drawing Crate");
+                    g2d.drawImage(tileSprites[TileType.CRATE.ordinal()], tileX, tileY, null);
+                }
             }
         }
         //Draw players

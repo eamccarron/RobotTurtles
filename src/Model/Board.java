@@ -12,10 +12,10 @@ public class Board implements BoardManager {
     public static final int BOARD_SIZE = 64;
     public static final int BOARD_LENGTH = (int)Math.floor(Math.sqrt(BOARD_SIZE));
     private static final TileType[] initialBoardLayout1 =
-            {TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            {TileType.REGULAR, TileType.STONE_WALL, TileType.ICE_WALL, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            TileType.ICE_WALL, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
-            TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
-            TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.JEWEL, TileType.JEWEL, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            TileType.REGULAR, TileType.CRATE, TileType.REGULAR, TileType.JEWEL, TileType.JEWEL, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.JEWEL, TileType.JEWEL, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
@@ -56,7 +56,6 @@ public class Board implements BoardManager {
                 }
             }
         }
-
     }
 
     public void setTurtles(Turtle[] turtles) {
