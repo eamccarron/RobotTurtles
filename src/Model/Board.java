@@ -7,10 +7,15 @@ import Controller.Controller;
 public class Board implements BoardManager{
     public static final int BOARD_SIZE = 64;
     public static final int BOARD_LENGTH = (int)Math.floor(Math.sqrt(BOARD_SIZE));
-    private static final int[] MIDDLE_POSITIONS = {27, 28, 35, 36}; //TODO Calculate based on board size
-    private static final int[] INITIAL_TURTLE_POSITIONS = {0,7,56,63};
-    private static final int[] ICE_WALL_POSITIONS = {};
-    private static final int[] STONE_WALL_POSITIONS = {};
+    private static final TileType[] initialBoardLayout1 =
+            {TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.JEWEL, TileType.JEWEL, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.JEWEL, TileType.JEWEL, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, };
     //Variables for tracking game state
     private boolean[] occupiedPositions = new boolean[BOARD_SIZE];
     private HashMap<Integer, Tile> layout = new HashMap<>(BOARD_SIZE);
@@ -18,24 +23,29 @@ public class Board implements BoardManager{
 
     public Board(int numPlayers){
         TileFactory tileFactory = new TileFactory();
+        boolean firstPortalInPair = true;
+        Portal firstInPair = new Portal();//Just to initialize
         for (int i = 0; i < BOARD_SIZE; i++) {
-            layout.put(i, tileFactory.createTile(TileType.REGULAR));
+            TileType type = initialBoardLayout1[i];
+            Tile newTile = tileFactory.createTile(type);
+            layout.put(i, newTile);
+            if (type == TileType.PORTAL){
+                ((Portal) newTile).setPosition(i);
+                if (firstPortalInPair) {
+                    firstPortalInPair = false;
+                    firstInPair = (Portal) newTile;
+                }
+                else{
+                    firstPortalInPair = true;
+                    firstInPair.setCorrespondingPortal((Portal) newTile);
+                    ((Portal) newTile).setCorrespondingPortal(firstInPair);
+                }
+            }
         }
-        for(int i = 0; i < numPlayers; i++){ 
+        for(int i = 0; i < numPlayers; i++){
             turtles[i] = new Turtle(i, this);
         }
-        for(int position : MIDDLE_POSITIONS){
-            layout.put(position, tileFactory.createTile(TileType.JEWEL));
-        }
-        for(int position : ICE_WALL_POSITIONS){
-            layout.put(position, tileFactory.createTile(TileType.ICE_WALL));
-        }
-        for(int position : STONE_WALL_POSITIONS){
-            layout.put(position, tileFactory.createTile(TileType.STONE_WALL));
-        }
-        for (int position : INITIAL_TURTLE_POSITIONS) {
-            layout.get(position).setVacancy(false);
-        }
+
     }
 
     public static void main(String[] args){

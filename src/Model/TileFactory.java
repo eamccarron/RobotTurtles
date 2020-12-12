@@ -12,6 +12,8 @@ public class TileFactory {
                 return new StoneWall();
             case JEWEL:
                 return new Jewel();
+            case PORTAL:
+                return new Portal();
             default:
                 System.out.println("Tile type not found");
                 return null;
