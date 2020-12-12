@@ -30,8 +30,11 @@ public class Board implements BoardManager {
     private static Board instance;
 
     public static Board getInstance(){
-        if(instance == null)
+        if(instance == null) {
             instance = new Board(TurtleMover.NUM_PLAYERS);
+            System.out.println("In if");
+        }
+        System.out.println("In getInstance");
         return instance;
     }
 
@@ -44,6 +47,7 @@ public class Board implements BoardManager {
             Tile newTile = tileFactory.createTile(type);
             layout.put(i, newTile);
             if (type == TileType.PORTAL){
+
                 ((Portal) newTile).setPosition(i);
                 if (firstPortalInPair) {
                     firstPortalInPair = false;
@@ -56,20 +60,13 @@ public class Board implements BoardManager {
                 }
             }
         }
-        for(int i = 0; i < numPlayers; i++){
-            turtles[i] = new Turtle(i);
-        }
 
     }
 
-    public static void main(String[] args){
-        TurtleMover turtleMover = new TurtleMover();
-        Board board = getInstance();
-        Turtle[] turtles = board.getTurtles();
-        for(int i = 0; i < TurtleMover.NUM_PLAYERS; i++)
-            turtleMover.addPlayer(turtles[i], i);
-        Controller controller = Controller.getInstance();
-        controller.initGame(board, turtleMover);
+    public void setTurtles(Turtle[] turtles) {
+        for (int i = 0; i < TurtleMover.NUM_PLAYERS; i++) {
+            this.turtles[i] = turtles[i];
+        }
     }
 
     public Turtle[] getTurtles(){

@@ -18,11 +18,13 @@ public class Turtle implements Player {
     private static final int EAST = 1;
     private static final int SOUTH = 2;
     private static final int WEST = 3;
+    private Board board = Board.getInstance();
     private int currDir;
     private int prevDir;
     private ArrayList<PlayerSubscriber> subscribers = new ArrayList<>();
 
     public Turtle(int playerID){
+        //board = Board.getInstance();
         this.playerID  = playerID;
         //Place players clockwise in 4 corners of board facing center
         switch (this.playerID) {
@@ -83,7 +85,7 @@ public class Turtle implements Player {
             default:
                 newPosition = currPosition;
         }
-        if (Board.getInstance().isPositionOccupied(newPosition)) {
+        if (board.isPositionOccupied(newPosition)) {
             System.out.println("Position Occupied");
             return false;
         }
@@ -94,8 +96,8 @@ public class Turtle implements Player {
     }
 
     public void bug(){
-        Board.getInstance().setUnoccupied(currPosition);
-        Board.getInstance().setOccupied(prevPosition);
+        board.setUnoccupied(currPosition);
+        board.setOccupied(prevPosition);
         System.out.printf("Bug played, setting currDir to %d and currPos to %d\n", prevDir, prevPosition);
         currDir = prevDir;
         currPosition = prevPosition;
@@ -120,6 +122,13 @@ public class Turtle implements Player {
         return currPosition;
     }
 
+    public void setPosition(int pos) {
+        this.storePrevState();
+        this.currPosition = pos;
+        board.getTile(currPosition).setVacancy(false);
+        board.getTile(prevPosition).setVacancy(true);
+    }
+
     public int getDirection() {
         return this.currDir;
     }
@@ -127,11 +136,6 @@ public class Turtle implements Player {
     @Override
     public void addSubscriber(PlayerSubscriber sub){
         this.subscribers.add(sub);
-    }
-
-    public void setPosition(int pos) {
-        this.storePrevState();
-        this.currPosition = pos;
     }
 
     @Override
@@ -154,6 +158,8 @@ public class Turtle implements Player {
                 case TURN_RIGHT:
                     this.turn("right");
                     break;
+                case LASER:
+                    this.shootLaser();
                 default:
                     break;
             }
@@ -162,9 +168,44 @@ public class Turtle implements Player {
             this.bug();
             return false;
         }
-        Board.getInstance().setOccupied(currPosition);
-        Board.getInstance().setUnoccupied(prevPosition);
+        board.setOccupied(currPosition);
+        board.setUnoccupied(prevPosition);
         return true;
+    }
+
+    public void shootLaser(){
+        int currPosition = this.getPosition();
+        int positionOneStepAhead;
+        switch(this.getDirection()){
+            case NORTH:
+                do {
+                    positionOneStepAhead = currPosition - 7;
+                    if (positionOneStepAhead < 0)
+                        return;
+                }while (board.getTile(positionOneStepAhead).getVacancy());
+            case EAST:
+                do {
+                    positionOneStepAhead = currPosition + 1;
+                    if (positionOneStepAhead%8 == 0)
+                        return;
+                }while (board.getTile(positionOneStepAhead).getVacancy());
+            case SOUTH:
+                do {
+                    positionOneStepAhead = currPosition + 7;
+                    if (positionOneStepAhead > 63)
+                        return;
+                }while (board.getTile(positionOneStepAhead).getVacancy());
+            case WEST:
+                do {
+                    positionOneStepAhead = currPosition - 1;
+                    if (positionOneStepAhead%8 == 7 || positionOneStepAhead<0)
+                        return;
+                }while (board.getTile(positionOneStepAhead).getVacancy());
+                break;
+            default:
+                positionOneStepAhead = -1;
+        }
+        board.getTile(positionOneStepAhead).getHitByLaser();
     }
 
     @Override
@@ -180,5 +221,13 @@ public class Turtle implements Player {
     @Override
     public boolean hasWon(){
         return hasWon;
+    }
+
+    public void usePortal(){
+        int pos = this.getPosition();
+        Portal portal = (Portal)board.getTile(pos);
+        Portal correspondingPortal = portal.getCorrespondingPortal();
+        int correspondingPosition = correspondingPortal.getPosition();
+        this.setPosition(correspondingPosition);
     }
 }

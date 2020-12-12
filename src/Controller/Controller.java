@@ -37,6 +37,19 @@ public class Controller {
         return instance;
     }
 
+    public static void main(String[] args){
+        TurtleMover turtleMover = new TurtleMover();
+        Board board = Board.getInstance();
+        Turtle[] turtles = new Turtle[TurtleMover.NUM_PLAYERS];
+        for(int i = 0; i < TurtleMover.NUM_PLAYERS; i++) {
+            turtles[i] = new Turtle(i);
+            turtleMover.addPlayer(turtles[i], i);
+        }
+        board.setTurtles(turtles);
+        Controller controller = Controller.getInstance();
+        controller.initGame(board, turtleMover);
+    }
+
     //Initializes a new game by instantiating a board and a view.
     public void initGame(BoardManager board, TurnManager turnManager){
         HashMap<Integer, Tile> layout = board.getTileLayout();
@@ -87,6 +100,9 @@ public class Controller {
             activePlayer.setHasWon();
             view.promptWin(activePlayerNum);
             winOrder.add(turnManager.getActivePlayerNumber());
+        }
+        if(board.getTile(playerPos) instanceof Portal){
+            activePlayer.usePortal();
         }
         //Retrieve updated game state from board
 

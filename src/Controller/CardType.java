@@ -6,7 +6,9 @@ public enum CardType {
     TURN_LEFT,
     TURN_RIGHT,
     FUNCTION_FROG,
-    BUG;
+    BUG,
+    LASER;
+
 
     //Return a nicely formatted string, mostly for debugging and testing purposes
     @Override
@@ -20,6 +22,10 @@ public enum CardType {
                 return "Turn Right";
             case BUG:
                 return "Bug";
+            case LASER:
+                return "Laser";
+            case FUNCTION_FROG:
+                return "Function Frog";
             default:
                 //return standard Object toString() by default, but this default can never actually be reached unless new cards are added
                 return super.toString();

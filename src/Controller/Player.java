@@ -12,4 +12,5 @@ public interface Player {
    int getNumber();
    void setHasWon();
    boolean hasWon();
+   void usePortal();
 }
