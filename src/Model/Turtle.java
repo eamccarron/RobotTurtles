@@ -165,10 +165,8 @@ public class Turtle implements Player {
                 case TURN_RIGHT:
                     this.turn("right");
                     break;
-<<<<<<< HEAD
                 case LASER:
                     this.shootLaser();
-=======
                 case FUNCTION_FROG:
                     if(function == null) {
                         this.function = new LinkedList<>(cards); //Create a copy of cards to store for function frog
@@ -177,7 +175,6 @@ public class Turtle implements Player {
                         System.out.println(function);
                         onCardsPlayed(new LinkedList<>(function)); //Create copy so that function isn't deleted as cards are pulled from queue.
                     }
->>>>>>> master
                 default:
                     break;
             }
@@ -191,7 +188,6 @@ public class Turtle implements Player {
         return true;
     }
 
-<<<<<<< HEAD
     public void shootLaser(){
         int currPosition = this.getPosition();
         int positionOneStepAhead;
@@ -226,8 +222,6 @@ public class Turtle implements Player {
         }
         board.getTile(positionOneStepAhead).getHitByLaser();
     }
-=======
->>>>>>> master
 
     @Override
     public int getNumber() {

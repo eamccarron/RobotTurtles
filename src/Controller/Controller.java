@@ -123,13 +123,10 @@ public class Controller {
             view.promptWin(activePlayerNum);
             winOrder.add(turnManager.getActivePlayerNumber());
         }
-<<<<<<< HEAD
         if(board.getTile(playerPos) instanceof Portal){
             activePlayer.usePortal();
         }
         //Retrieve updated game state from board
-=======
->>>>>>> master
 
         //Render new state in GameView (state in the view is automatically updated via the observer pattern)
         view.redraw();
