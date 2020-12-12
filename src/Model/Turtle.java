@@ -24,7 +24,6 @@ public class Turtle implements Player {
     private ArrayList<PlayerSubscriber> subscribers = new ArrayList<>();
 
     public Turtle(int playerID){
-        //board = Board.getInstance();
         this.playerID  = playerID;
         //Place players clockwise in 4 corners of board facing center
         switch (this.playerID) {
@@ -96,8 +95,8 @@ public class Turtle implements Player {
     }
 
     public void bug(){
-        board.setUnoccupied(currPosition);
-        board.setOccupied(prevPosition);
+        board.getTile(currPosition).setVacancy(true);
+        board.getTile(prevPosition).setVacancy(false);
         System.out.printf("Bug played, setting currDir to %d and currPos to %d\n", prevDir, prevPosition);
         currDir = prevDir;
         currPosition = prevPosition;
@@ -168,8 +167,8 @@ public class Turtle implements Player {
             this.bug();
             return false;
         }
-        board.setOccupied(currPosition);
-        board.setUnoccupied(prevPosition);
+        board.getTile(currPosition).setVacancy(false);
+        board.getTile(prevPosition).setVacancy(true);
         return true;
     }
 
@@ -179,26 +178,26 @@ public class Turtle implements Player {
         switch(this.getDirection()){
             case NORTH:
                 do {
-                    positionOneStepAhead = currPosition - 7;
+                    positionOneStepAhead = currPosition - boardLength;
                     if (positionOneStepAhead < 0)
                         return;
                 }while (board.getTile(positionOneStepAhead).getVacancy());
             case EAST:
                 do {
                     positionOneStepAhead = currPosition + 1;
-                    if (positionOneStepAhead%8 == 0)
+                    if (positionOneStepAhead%boardLength == 0)
                         return;
                 }while (board.getTile(positionOneStepAhead).getVacancy());
             case SOUTH:
                 do {
-                    positionOneStepAhead = currPosition + 7;
+                    positionOneStepAhead = currPosition + boardLength;
                     if (positionOneStepAhead > 63)
                         return;
                 }while (board.getTile(positionOneStepAhead).getVacancy());
             case WEST:
                 do {
                     positionOneStepAhead = currPosition - 1;
-                    if (positionOneStepAhead%8 == 7 || positionOneStepAhead<0)
+                    if (positionOneStepAhead%boardLength == 7 || positionOneStepAhead<0)
                         return;
                 }while (board.getTile(positionOneStepAhead).getVacancy());
                 break;
@@ -210,7 +209,7 @@ public class Turtle implements Player {
 
     @Override
     public int getNumber() {
-       return playerID;
+        return playerID;
     }
 
     @Override

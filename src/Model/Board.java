@@ -3,8 +3,6 @@ package Model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import Controller.Controller;
-
 import Controller.BoardSubscriber;
 import Controller.BoardManager;
 
@@ -23,19 +21,17 @@ public class Board implements BoardManager {
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, };
     //Variables for tracking game state
-    private boolean[] occupiedPositions = new boolean[BOARD_SIZE];
+    //private boolean[] occupiedPositions = new boolean[BOARD_SIZE];
     private HashMap<Integer, Tile> layout = new HashMap<>(BOARD_SIZE);
     private Turtle[] turtles = new Turtle[4];
     private ArrayList<BoardSubscriber> subscribers = new ArrayList<>();
-    private static Board instance;
+    private static Board board;
 
     public static Board getInstance(){
-        if(instance == null) {
-            instance = new Board(TurtleMover.NUM_PLAYERS);
-            System.out.println("In if");
+        if(board == null) {
+            board = new Board(TurtleMover.NUM_PLAYERS);
         }
-        System.out.println("In getInstance");
-        return instance;
+        return board;
     }
 
     private Board(int numPlayers){
@@ -74,16 +70,17 @@ public class Board implements BoardManager {
     }
 
     public boolean isPositionOccupied(int position){
-        return occupiedPositions[position];
+        //return occupiedPositions[position];
+        return !board.getTile(position).getVacancy();
     }
 
-    public void setOccupied(int position){
+    /*public void setOccupied(int position){
         occupiedPositions[position] = true;
     }
 
     public void setUnoccupied(int position){
         occupiedPositions[position] = false;
-    }
+    }*/
 
     public Tile getTile(int position){
         return layout.get(position);
