@@ -1,7 +1,7 @@
 package View;
 
 import Controller.BoardSubscriber;
-import Controller.TileType;
+import Model.TileType;
 import Controller.PlayerSubscriber;
 import Model.Tile;
 
@@ -130,7 +130,7 @@ public class BoardPanel extends JPanel implements BoardSubscriber, PlayerSubscri
         playerDirections[playerNumber] = direction;
 	}
     @Override
-    public void onTilesUpdated(HashMap<Integer, TileType> tileLayout) {
+    public void onTilesUpdated(HashMap<Integer, Tile> tileLayout) {
 
     }
 }

@@ -35,7 +35,7 @@ public class Board implements BoardManager {
         return instance;
     }
 
-    public Board(int numPlayers){
+    private Board(int numPlayers){
         TileFactory tileFactory = new TileFactory();
         boolean firstPortalInPair = true;
         Portal firstInPair = new Portal();//Just to initialize
@@ -57,7 +57,7 @@ public class Board implements BoardManager {
             }
         }
         for(int i = 0; i < numPlayers; i++){
-            turtles[i] = new Turtle(i, this);
+            turtles[i] = new Turtle(i);
         }
 
     }

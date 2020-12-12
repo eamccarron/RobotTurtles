@@ -39,7 +39,7 @@ public class Controller {
 
     //Initializes a new game by instantiating a board and a view.
     public void initGame(BoardManager board, TurnManager turnManager){
-        HashMap<Integer, TileType> layout = board.getTileLayout();
+        HashMap<Integer, Tile> layout = board.getTileLayout();
         winOrder = new ArrayList<>(turnManager.getNumPlayers());
         cardsChosen = new LinkedList<>();
         int[] playerPositions = board.getPlayerPositions();
