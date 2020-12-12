@@ -47,18 +47,6 @@ public class GameView{
         cardChooserDialog.promptNextCard();
     }
 
-    public void updatePlayerPosition(int playerNumber, int position){
-        boardPanel.updatePlayerPosition(playerNumber, position);
-    }
-
-    public void updatePlayerDirection(int playerNumber, int direction){
-        boardPanel.updatePlayerDirection(playerNumber, direction);
-    }
-
-	public void updateTiles(HashMap<Integer, TileType> layout) {
-       boardPanel.updateTiles(layout); 
-	}
-
 	public void redraw() {
         boardPanel.repaint();
 	}
@@ -84,6 +72,10 @@ public class GameView{
         window.getContentPane().add(endGameStatus, BorderLayout.CENTER);
         window.getContentPane().add(playAgain, BorderLayout.SOUTH);
 	}
+
+	public BoardPanel getBoardPanel(){
+        return this.boardPanel;
+    }
 
 	public void promptIllegalMove() {
         cardChooserDialog.promptIllegalMove();

@@ -1,11 +1,17 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import Controller.TileType;
 import Controller.Controller;
 
-public class Board implements BoardManager{
+import Controller.BoardSubscriber;
+import Controller.BoardManager;
+
+//Subject for BoardSubscribers
+//SINGLETON
+public class Board implements BoardManager {
     public static final int BOARD_SIZE = 64;
     public static final int BOARD_LENGTH = (int)Math.floor(Math.sqrt(BOARD_SIZE));
     private static final int[] MIDDLE_POSITIONS = {27, 28, 35, 36}; //TODO Calculate based on board size
@@ -13,10 +19,18 @@ public class Board implements BoardManager{
     private boolean[] occupiedPositions = new boolean[BOARD_SIZE];
     private HashMap<Integer, TileType> layout = new HashMap<>(BOARD_SIZE);
     private Turtle[] turtles = new Turtle[4];
+    private ArrayList<BoardSubscriber> subscribers = new ArrayList<>();
+    private static Board instance;
 
-    public Board(int numPlayers){
+    public static Board getInstance(){
+        if(instance == null)
+            instance = new Board(TurtleMover.NUM_PLAYERS);
+        return instance;
+    }
+
+    private Board(int numPlayers){
         for(int i = 0; i < numPlayers; i++){ 
-            turtles[i] = new Turtle(i, this);
+            turtles[i] = new Turtle(i);
         }
         for(int position : MIDDLE_POSITIONS){
             layout.put(position, TileType.JEWEL);
@@ -25,7 +39,7 @@ public class Board implements BoardManager{
 
     public static void main(String[] args){
         TurtleMover turtleMover = new TurtleMover();
-        Board board = new Board(TurtleMover.NUM_PLAYERS);
+        Board board = getInstance();
         Turtle[] turtles = board.getTurtles();
         for(int i = 0; i < TurtleMover.NUM_PLAYERS; i++)
             turtleMover.addPlayer(turtles[i], i);
@@ -33,8 +47,7 @@ public class Board implements BoardManager{
         controller.initGame(board, turtleMover);
     }
 
-    //This method is used only for the instantiation of a TurnManager in the main method.
-    private Turtle[] getTurtles(){
+    public Turtle[] getTurtles(){
         return turtles;
     }
 
@@ -54,6 +67,9 @@ public class Board implements BoardManager{
         return layout.getOrDefault(position, TileType.EMPTY);
     }
 
+    public void addSubscriber(BoardSubscriber subscriber){
+        this.subscribers.add(subscriber);
+    }
 
 	public HashMap<Integer, TileType> getTileLayout() {
         return this.layout;
