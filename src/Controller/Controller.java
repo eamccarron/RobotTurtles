@@ -3,28 +3,31 @@ package Controller;
 import View.GameView;
 import View.CardStack;
 
-import Model.BoardManager;
-import Model.CardPlayer;
-import Model.TurnManager;
-
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
-
-//The main controller for the game, responsible for main game loop and determining win conditions 
+//The main controller for the game, responsible for main game loop and determining win conditions
+//SINGLETON
 public class Controller {
     private GameView view;
     private BoardManager board;
     private TurnManager turnManager;
-
-    private static final int NUM_PLAYERS = 4;
-    private static ArrayList<Integer> winOrder = new ArrayList<>(NUM_PLAYERS);
+    private static ArrayList<Integer> winOrder;
     private static Controller instance;
+    private boolean playThreeEnabled = false;
+    private Queue<CardType> cardsChosen;
     //Start event driven game loop by initializing a new game
 
-    private Controller(){};
+    private Controller(){
+    }
+
 
     public static Controller getInstance(){
         if (instance == null) {
@@ -36,10 +39,15 @@ public class Controller {
     //Initializes a new game by instantiating a board and a view.
     public void initGame(BoardManager board, TurnManager turnManager){
         HashMap<Integer, TileType> layout = board.getTileLayout();
+        winOrder = new ArrayList<>(turnManager.getNumPlayers());
+        cardsChosen = new LinkedList<>();
         int[] playerPositions = board.getPlayerPositions();
         this.board = board;
         this.turnManager = turnManager;
-        view = new GameView(board.getBoardSize(), playerPositions, board.getPlayerDirections(), layout); 
+        view = new GameView(board.getBoardSize(), playerPositions, board.getPlayerDirections(), layout);
+        for(int i = 0; i < turnManager.getNumPlayers(); i++){
+            turnManager.getPlayer(i).addSubscriber(view.getBoardPanel());
+        }
         view.getNextCard(turnManager.getActivePlayerNumber());
     }
 
@@ -47,14 +55,31 @@ public class Controller {
         CardStackListener listener = new CardStackListener();
         cardStack.addActionListener(listener);
     }
-
+    public void registerPlayThreeToggle(JCheckBox playThreeToggle){
+        playThreeToggle.addItemListener(new PlayThreeListener());
+    }
     //The handler function for when a card is chosen.  This is called whenever a CardStack is clicked.
     private boolean onCardChosen(CardType cardChosen) {
-        CardPlayer activePlayer = turnManager.getActivePlayer();
+        if(cardsChosen.peek() == CardType.BUG) //If bug is the most recent card chosen remove it from queue
+            cardsChosen.poll();
+
+        Player activePlayer = turnManager.getActivePlayer();
         int activePlayerNum = turnManager.getActivePlayerNumber();
 
-        if(!activePlayer.onCardPlayed(cardChosen))
+        if(cardChosen == CardType.BUG){
+            cardsChosen.clear();
+        }
+
+        cardsChosen.offer(cardChosen);
+        System.out.println(cardsChosen.size());
+
+        if(playThreeEnabled && cardsChosen.size() < 3 && cardChosen != CardType.BUG)
+            return true;  //Do not play cards until three are chosen, unless the Bug card was played
+
+        if(!activePlayer.onCardsPlayed(cardsChosen)) {
+            cardsChosen.clear();
             return false;
+        }
 
         int playerPos = board.getPlayerPositions()[turnManager.getActivePlayerNumber()];
         if(board.getTile(playerPos) == TileType.JEWEL){
@@ -63,17 +88,11 @@ public class Controller {
             winOrder.add(turnManager.getActivePlayerNumber());
         }
         //Retrieve updated game state from board.
-        HashMap<Integer, TileType> layout = board.getTileLayout();
-        int[] playerPositions = board.getPlayerPositions();
-        int[] playerDirections = board.getPlayerDirections();
 
         if(cardChosen == CardType.BUG) //If the bug card was chosen, prompt the player to choose a new move
             view.getNextCard(activePlayerNum);
 
         //Render new state in GameView
-        view.updatePlayerPosition(activePlayerNum, playerPositions[activePlayerNum]);
-        view.updatePlayerDirection(activePlayerNum, playerDirections[activePlayerNum]);
-        view.updateTiles(layout);
         view.redraw();
         return true;
     }
@@ -83,22 +102,39 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             assert e.getSource() instanceof CardStack; // This listener should only be used for cardStacks
             CardType cardChosen = ((CardStack) (e.getSource())).getCardType();
-            System.out.println(cardChosen);
             Controller controller = getInstance();
             if(!controller.onCardChosen(cardChosen)){
                 System.out.println("Illegal Move");
                 view.promptIllegalMove();
                 view.getNextCard(turnManager.getActivePlayer().getNumber());
-            }else if(cardChosen != CardType.BUG){  //Only prompt end turn if the bug card was not chosen
+            }if(playThreeEnabled) {
+                if(cardsChosen.size() == 3 && cardChosen != CardType.BUG) {
+                    view.promptEndTurn();
+                }
+            }
+            else if(cardChosen != CardType.BUG) {
                 view.promptEndTurn();
             }
         }
     }
 
+    private class PlayThreeListener implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent itemEvent) {
+            Controller.this.playThreeEnabled = !playThreeEnabled;
+            System.out.println(playThreeEnabled);
+        }
+    }
+
 	public void onTurnEnded() {
+        cardsChosen.clear();
         turnManager.endTurn();
         view.getNextCard(turnManager.getActivePlayer().getNumber());
 	}
+
+	public boolean playThreeEnabled(){
+        return playThreeEnabled;
+    }
 
 	public void onGameEnded() {
         view.showEndGameScreen(winOrder);

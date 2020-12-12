@@ -1,8 +1,6 @@
 package View;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -18,7 +16,7 @@ public class CardChooserDialog extends JDialog {
     private CardStack bug;
     private JButton endTurn;
     private ImageIcon[] cardIcons;
-
+    private JCheckBox playThree;
     private final Dimension windowSize = new Dimension(600, 300);
 
     public CardChooserDialog() {
@@ -38,20 +36,26 @@ public class CardChooserDialog extends JDialog {
         bug = new CardStack(CardType.BUG, cardIcons[CardType.BUG.ordinal()]);
 
         endTurn = new JButton("End Turn");
+        playThree = new JCheckBox("Play Three?");
 
         Controller controller = Controller.getInstance();
         controller.registerCardStack(stepForward);
         controller.registerCardStack(turnLeft);
         controller.registerCardStack(turnRight);
         controller.registerCardStack(bug);
+        controller.registerPlayThreeToggle(playThree);
         endTurn.addActionListener( e -> controller.onTurnEnded());
+
+
         this.setSize(windowSize); 
         this.setLayout(new FlowLayout());
+
         this.add(stepForward);
         this.add(turnLeft);
         this.add(turnRight);
         this.add(bug);
         this.add(endTurn);
+        this.add(playThree);
 
         endTurn.setVisible(false);
         bug.setVisible(false);
@@ -63,6 +67,7 @@ public class CardChooserDialog extends JDialog {
         cardIcons[CardType.TURN_LEFT.ordinal()] = new ImageIcon("Assets/TurnLeftCard.png");
         cardIcons[CardType.TURN_RIGHT.ordinal()] = new ImageIcon("Assets/TurnRightCard.png");
         cardIcons[CardType.BUG.ordinal()] = new ImageIcon("Assets/BugCard.png");
+        cardIcons[CardType.FUNCTION_FROG.ordinal()] = new ImageIcon("Assets/FunctionFrog.png");
     }
 
     public void setStatus(String text){

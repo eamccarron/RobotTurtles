@@ -1,6 +1,9 @@
 package View;
 
+import Controller.BoardSubscriber;
 import Controller.TileType;
+import Controller.PlayerSubscriber;
+
 import java.awt.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -12,7 +15,7 @@ import java.util.HashMap;
 import javax.swing.*;
 
 
-public class BoardPanel extends JPanel{
+public class BoardPanel extends JPanel implements BoardSubscriber, PlayerSubscriber {
     private int boardSize; //The number of tiles on the board
     private int boardLength; //Assume square board so length = with
     private int[] playerPositions;
@@ -108,19 +111,21 @@ public class BoardPanel extends JPanel{
        
        return newSprite; 
     }
-    
-    public void updateTiles(HashMap<Integer, TileType> tileLayout){
-        //TODO render tile sprites
-    }
 
-	public void updatePlayerPosition(int playerNum, int position) {
+    @Override
+	public void onPlayerMoved(int playerNum, int position) {
         playerPositions[playerNum] = position;
 	}
 
-	public void updatePlayerDirection(int playerNumber, int direction) {
-        if(playerDirections[playerNumber] == direction)
-            return;
+    @Override
+	public void onPlayerRotated(int playerNumber, int direction) {
+        //if(playerDirections[playerNumber] == direction)
+          //  return;
         playerSprites[playerNumber] = rotatePlayerSprite(playerSprites[playerNumber], playerDirections[playerNumber], direction);
         playerDirections[playerNumber] = direction;
 	}
+    @Override
+    public void onTilesUpdated(HashMap<Integer, TileType> tileLayout) {
+
+    }
 }

@@ -5,6 +5,7 @@ public enum CardType {
     STEP_FORWARD,
     TURN_LEFT,
     TURN_RIGHT,
+    FUNCTION_FROG,
     BUG;
 
     //Return a nicely formatted string, mostly for debugging and testing purposes
@@ -20,7 +21,7 @@ public enum CardType {
             case BUG:
                 return "Bug";
             default:
-                //return standard Object toString() by default, but this default can never actually be reached
+                //return standard Object toString() by default, but this default can never actually be reached unless new cards are added
                 return super.toString();
         }
     }
