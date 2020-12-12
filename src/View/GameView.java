@@ -46,6 +46,8 @@ public class GameView{
     //Creates a dialog which prompts the current player to choose a card from a card stack
     public void getNextCard(int playerID) {
         cardChooserDialog.setStatus(String.format("Player %d, pick a card", playerID + 1));
+        boardPanel.highlightPlayer(playerID);
+        boardPanel.repaint();
         cardChooserDialog.promptNextCard();
     }
 
@@ -86,4 +88,8 @@ public class GameView{
 	public void promptEndTurn() {
         cardChooserDialog.promptEndTurn();
 	}
+
+    public void promptFunctionFrog() {
+        cardChooserDialog.promptFunctionFrog();
+    }
 }

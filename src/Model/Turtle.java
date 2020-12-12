@@ -5,6 +5,8 @@ import Controller.Player;
 import Controller.PlayerSubscriber;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Queue;
 
 //Subject for TurtleSubscriber
@@ -21,6 +23,7 @@ public class Turtle implements Player {
     private int currDir;
     private int prevDir;
     private ArrayList<PlayerSubscriber> subscribers = new ArrayList<>();
+    private Queue<CardType> function;
 
     public Turtle(int playerID){
         this.playerID  = playerID;
@@ -136,10 +139,13 @@ public class Turtle implements Player {
 
     @Override
     public boolean onCardsPlayed(Queue<CardType> cards) {
-        if(cards.peek() != CardType.BUG)
+        if(cards.peek() != CardType.BUG && cards.peek() != CardType.FUNCTION_FROG)
             storePrevState();
         boolean legalMove = true;
-        for(CardType card : cards) {
+        int nCards = cards.size();
+        cardIteration:
+        for(int i = 0; i < nCards; i++) {
+            CardType card = cards.poll();
             System.out.println(card);
             switch (card) {
                 case STEP_FORWARD:
@@ -154,6 +160,14 @@ public class Turtle implements Player {
                 case TURN_RIGHT:
                     this.turn("right");
                     break;
+                case FUNCTION_FROG:
+                    if(function == null) {
+                        this.function = new LinkedList<>(cards); //Create a copy of cards to store for function frog
+                        break cardIteration;
+                    } else {
+                        System.out.println(function);
+                        onCardsPlayed(new LinkedList<>(function)); //Create copy so that function isn't deleted as cards are pulled from queue.
+                    }
                 default:
                     break;
             }
@@ -166,6 +180,7 @@ public class Turtle implements Player {
         Board.getInstance().setUnoccupied(prevPosition);
         return true;
     }
+
 
     @Override
     public int getNumber() {

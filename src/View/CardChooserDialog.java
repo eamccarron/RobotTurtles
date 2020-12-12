@@ -14,14 +14,20 @@ public class CardChooserDialog extends JDialog {
     private CardStack turnLeft;
     private CardStack turnRight;
     private CardStack bug;
+    private CardStack functionFrog;
+
     private JButton endTurn;
+    private JButton submitCards;
     private ImageIcon[] cardIcons;
-    private JCheckBox playThree;
-    private final Dimension windowSize = new Dimension(600, 300);
+    private JRadioButton playThree;
+    private static final String playThreeText = "Play Three";
+    private JRadioButton writeProgram;
+    private static final String writeProgramText = "Write Program";
+
+    private final Dimension windowSize = new Dimension(1000, 300);
 
     public CardChooserDialog() {
         super();
-        this.setResizable(false);
 
         cardIcons = new ImageIcon[CardType.values().length];
         try { 
@@ -34,32 +40,52 @@ public class CardChooserDialog extends JDialog {
         turnLeft = new CardStack(CardType.TURN_LEFT, cardIcons[CardType.TURN_LEFT.ordinal()]);
         turnRight = new CardStack(CardType.TURN_RIGHT, cardIcons[CardType.TURN_RIGHT.ordinal()]);
         bug = new CardStack(CardType.BUG, cardIcons[CardType.BUG.ordinal()]);
+        functionFrog = new CardStack(CardType.FUNCTION_FROG, cardIcons[CardType.FUNCTION_FROG.ordinal()]);
 
         endTurn = new JButton("End Turn");
-        playThree = new JCheckBox("Play Three?");
+        submitCards = new JButton("Submit");
+
+
+        ButtonGroup ruleControlButtons = new ButtonGroup();
+        playThree = new JRadioButton(playThreeText);
+        playThree.addActionListener(e -> submitCards.setVisible(false));
+        ruleControlButtons.add(playThree);
+        writeProgram = new JRadioButton(writeProgramText);
+        writeProgram.addActionListener(e -> submitCards.setVisible(true));
+        ruleControlButtons.add(writeProgram);
 
         Controller controller = Controller.getInstance();
+        //Register CardStacks
         controller.registerCardStack(stepForward);
         controller.registerCardStack(turnLeft);
         controller.registerCardStack(turnRight);
         controller.registerCardStack(bug);
-        controller.registerPlayThreeToggle(playThree);
-        endTurn.addActionListener( e -> controller.onTurnEnded());
+        controller.registerCardStack(functionFrog);
 
+        //Register control buttons
+        controller.registerRuleControlButtons(ruleControlButtons, playThreeText, writeProgramText);
+        endTurn.addActionListener( e -> controller.onTurnEnded());
+        submitCards.addActionListener(e -> controller.submitCards());
 
         this.setSize(windowSize); 
-        this.setLayout(new FlowLayout());
+        this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.X_AXIS));
 
-        this.add(stepForward);
-        this.add(turnLeft);
-        this.add(turnRight);
-        this.add(bug);
-        this.add(endTurn);
-        this.add(playThree);
+        this.getContentPane().add(stepForward);
+        this.getContentPane().add(turnLeft);
+        this.getContentPane().add(turnRight);
+        this.getContentPane().add(bug);
+        this.getContentPane().add(functionFrog);
+
+        this.getContentPane().add(endTurn);
+        this.getContentPane().add(submitCards);
+        this.getContentPane().add(playThree);
+        this.getContentPane().add(writeProgram);
 
         endTurn.setVisible(false);
         bug.setVisible(false);
+        submitCards.setVisible(false);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setResizable(true);
     }
 
     private void loadIcons() throws IOException{
@@ -67,7 +93,13 @@ public class CardChooserDialog extends JDialog {
         cardIcons[CardType.TURN_LEFT.ordinal()] = new ImageIcon("Assets/TurnLeftCard.png");
         cardIcons[CardType.TURN_RIGHT.ordinal()] = new ImageIcon("Assets/TurnRightCard.png");
         cardIcons[CardType.BUG.ordinal()] = new ImageIcon("Assets/BugCard.png");
-        cardIcons[CardType.FUNCTION_FROG.ordinal()] = new ImageIcon("Assets/FunctionFrog.png");
+        cardIcons[CardType.FUNCTION_FROG.ordinal()] = new ImageIcon("Assets/functionFrog.png");
+    }
+
+    private void clearContents(){
+        for(Component c : this.getContentPane().getComponents()){
+            c.setVisible(false);
+        }
     }
 
     public void setStatus(String text){
@@ -79,25 +111,38 @@ public class CardChooserDialog extends JDialog {
     }
 
     public void promptEndTurn(){
-        stepForward.setVisible(false); 
-        turnLeft.setVisible(false);
-        turnRight.setVisible(false);
+        clearContents();
+
         setStatus("End turn?");
         endTurn.setVisible(true);
         bug.setVisible(true);
     }
 
 	public void promptNextCard() {
+        clearContents();
+
+        if(writeProgram.isSelected())
+            submitCards.setVisible(true);
         stepForward.setVisible(true);
         turnLeft.setVisible(true);
         turnRight.setVisible(true);
-
-        endTurn.setVisible(false);
-        bug.setVisible(false);
+        functionFrog.setVisible(true);
+        playThree.setVisible(true);
+        writeProgram.setVisible(true);
 	}
 	public void promptWin(int number) {
         setStatus(String.format("Player %d has won!", number));
 	}
 
 
+    public void promptFunctionFrog() {
+        clearContents();
+
+        stepForward.setVisible(true);
+        turnLeft.setVisible(true);
+        turnRight.setVisible(true);
+        submitCards.setVisible(true);
+
+        setStatus("Choose cards for function frog then click submit to save");
+    }
 }
