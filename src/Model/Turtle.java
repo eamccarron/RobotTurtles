@@ -88,6 +88,8 @@ public class Turtle implements Player {
             System.out.println("Position Occupied");
             return false;
         }
+        board.getTile(currPosition).setVacancy(true);
+        board.getTile(newPosition).setVacancy(false);
         currPosition = newPosition;
         notifySubscribersOfMovement();
         System.out.printf("CurrPosition: %d, PrevPosition: %d\n", currPosition, prevPosition);
