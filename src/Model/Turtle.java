@@ -58,31 +58,51 @@ public class Turtle implements Player {
         }
     }
 
-    public boolean moveForward(){
+    public int getOnePositionAhead(int currPosition){
         int newPosition;
         switch(currDir){
             case NORTH:
                 if (currPosition<boardLength)
-                    return false;
+                    return -1;
                 newPosition = currPosition - boardLength;
                 break;
             case EAST:
                 if (currPosition%boardLength == 7)
-                    return false;
+                    return -1;
                 newPosition = currPosition  + 1;
                 break;
             case SOUTH:
                 if (currPosition >= Board.BOARD_SIZE-boardLength)
-                    return false;
+                    return -1;
                 newPosition = currPosition + boardLength;
                 break;
             case WEST:
                 if (currPosition%boardLength == 0)
-                    return false;
+                    return -1;
                 newPosition = currPosition  - 1;
                 break;
             default:
                 newPosition = currPosition;
+        }
+        return newPosition;
+    }
+
+    public boolean moveForward(){
+        int newPosition = getOnePositionAhead(currPosition);
+        if (newPosition == -1)
+            return false;
+        Tile newTile = board.getTile(newPosition);
+        if (newTile.hasCrate()){
+            int positionInFrontOfCrate = getOnePositionAhead(newPosition);
+            if (positionInFrontOfCrate == -1)
+                return false;
+            Tile tileInFrontOfCrate = board.getTile(positionInFrontOfCrate);
+            boolean isVacant = tileInFrontOfCrate.getVacancy();
+            if (isVacant){
+                tileInFrontOfCrate.addCrate();
+                newTile.removeCrate();
+            }
+            else return false;
         }
         if (board.isPositionOccupied(newPosition)) {
             System.out.println("Position Occupied");
@@ -176,37 +196,12 @@ public class Turtle implements Player {
 
     public void shootLaser(){
         int currPosition = this.getPosition();
-        int positionOneStepAhead;
-        switch(this.getDirection()){
-            case NORTH:
-                do {
-                    positionOneStepAhead = currPosition - boardLength;
-                    if (positionOneStepAhead < 0)
-                        return;
-                }while (board.getTile(positionOneStepAhead).getVacancy());
-            case EAST:
-                do {
-                    positionOneStepAhead = currPosition + 1;
-                    if (positionOneStepAhead%boardLength == 0)
-                        return;
-                }while (board.getTile(positionOneStepAhead).getVacancy());
-            case SOUTH:
-                do {
-                    positionOneStepAhead = currPosition + boardLength;
-                    if (positionOneStepAhead > 63)
-                        return;
-                }while (board.getTile(positionOneStepAhead).getVacancy());
-            case WEST:
-                do {
-                    positionOneStepAhead = currPosition - 1;
-                    if (positionOneStepAhead%boardLength == 7 || positionOneStepAhead<0)
-                        return;
-                }while (board.getTile(positionOneStepAhead).getVacancy());
-                break;
-            default:
-                positionOneStepAhead = -1;
+        int positionOneStepAhead = getOnePositionAhead(currPosition);
+        while (board.getTile(positionOneStepAhead).getVacancy()){
+            positionOneStepAhead = getOnePositionAhead(positionOneStepAhead);
         }
-        board.getTile(positionOneStepAhead).getHitByLaser();
+        if (positionOneStepAhead != -1)
+            board.getTile(positionOneStepAhead).getHitByLaser();
     }
 
     @Override

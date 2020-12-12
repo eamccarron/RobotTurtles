@@ -26,8 +26,12 @@ public abstract class Tile {
     }
 
     public void addCrate() {
-        this.crateState = true;
-        this.setVacancy(false);
+        if (getVacancy()) {
+            this.crateState = true;
+            this.setVacancy(false);
+        }
+        else
+            System.out.println("Error: this tile is not vacant and does not have room for a crate");
     }
 
     public void removeCrate() {

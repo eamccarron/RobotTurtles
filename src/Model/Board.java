@@ -20,8 +20,8 @@ public class Board implements BoardManager {
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, };
+    private static final int[] initialCrateLocations = {};
     //Variables for tracking game state
-    //private boolean[] occupiedPositions = new boolean[BOARD_SIZE];
     private HashMap<Integer, Tile> layout = new HashMap<>(BOARD_SIZE);
     private Turtle[] turtles = new Turtle[4];
     private ArrayList<BoardSubscriber> subscribers = new ArrayList<>();
@@ -56,6 +56,9 @@ public class Board implements BoardManager {
                 }
             }
         }
+        for (int location : initialCrateLocations) {
+            board.getTile(location).addCrate();
+        }
 
     }
 
@@ -70,17 +73,8 @@ public class Board implements BoardManager {
     }
 
     public boolean isPositionOccupied(int position){
-        //return occupiedPositions[position];
         return !board.getTile(position).getVacancy();
     }
-
-    /*public void setOccupied(int position){
-        occupiedPositions[position] = true;
-    }
-
-    public void setUnoccupied(int position){
-        occupiedPositions[position] = false;
-    }*/
 
     public Tile getTile(int position){
         return layout.get(position);
