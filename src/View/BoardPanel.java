@@ -1,8 +1,9 @@
 package View;
 
 import Controller.BoardSubscriber;
-import Controller.TileType;
+import Model.TileType;
 import Controller.PlayerSubscriber;
+import Model.Tile;
 
 import java.awt.*;
 import javax.imageio.ImageIO;
@@ -20,11 +21,11 @@ public class BoardPanel extends JPanel implements BoardSubscriber, PlayerSubscri
     private int boardLength; //Assume square board so length = with
     private int[] playerPositions;
     private int[] playerDirections;
-    private HashMap<Integer, TileType> tileLayout;
+    private HashMap<Integer, Tile> tileLayout;
     private BufferedImage[] playerSprites;
     private BufferedImage[] tileSprites;
 
-    public BoardPanel(int boardSize, int[] playerPositions, int[] playerDirections, HashMap<Integer, TileType> tileLayout){
+    public BoardPanel(int boardSize, int[] playerPositions, int[] playerDirections, HashMap<Integer, Tile> tileLayout){
         super();
         this.playerPositions = playerPositions;
         this.playerDirections = playerDirections;
@@ -77,8 +78,8 @@ public class BoardPanel extends JPanel implements BoardSubscriber, PlayerSubscri
         
         //Draw tiles
         for(int i = 0; i < boardSize; i++){
-            TileType tile = tileLayout.getOrDefault(i, TileType.EMPTY);
-            if(tile != TileType.EMPTY){
+            TileType tile = tileLayout.get(i).getTileType();
+            if(tile != TileType.REGULAR){
                 int tileX = (i % boardLength) * cellWidth;
                 int tileY = (i / boardLength) * cellHeight;
 
@@ -111,6 +112,10 @@ public class BoardPanel extends JPanel implements BoardSubscriber, PlayerSubscri
        
        return newSprite; 
     }
+    
+    public void updateTiles(HashMap<Integer, Tile> tileLayout){
+        //TODO render tile sprites
+    }
 
     @Override
 	public void onPlayerMoved(int playerNum, int position) {
@@ -125,7 +130,7 @@ public class BoardPanel extends JPanel implements BoardSubscriber, PlayerSubscri
         playerDirections[playerNumber] = direction;
 	}
     @Override
-    public void onTilesUpdated(HashMap<Integer, TileType> tileLayout) {
+    public void onTilesUpdated(HashMap<Integer, Tile> tileLayout) {
 
     }
 }

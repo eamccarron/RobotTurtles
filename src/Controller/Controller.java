@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.*;
 import View.GameView;
 import View.CardStack;
 
@@ -38,7 +39,7 @@ public class Controller {
 
     //Initializes a new game by instantiating a board and a view.
     public void initGame(BoardManager board, TurnManager turnManager){
-        HashMap<Integer, TileType> layout = board.getTileLayout();
+        HashMap<Integer, Tile> layout = board.getTileLayout();
         winOrder = new ArrayList<>(turnManager.getNumPlayers());
         cardsChosen = new LinkedList<>();
         int[] playerPositions = board.getPlayerPositions();
@@ -82,12 +83,12 @@ public class Controller {
         }
 
         int playerPos = board.getPlayerPositions()[turnManager.getActivePlayerNumber()];
-        if(board.getTile(playerPos) == TileType.JEWEL){
+        if(board.getTile(playerPos) instanceof Jewel){
             activePlayer.setHasWon();
             view.promptWin(activePlayerNum);
             winOrder.add(turnManager.getActivePlayerNumber());
         }
-        //Retrieve updated game state from board.
+        //Retrieve updated game state from board
 
         if(cardChosen == CardType.BUG) //If the bug card was chosen, prompt the player to choose a new move
             view.getNextCard(activePlayerNum);

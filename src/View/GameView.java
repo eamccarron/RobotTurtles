@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 //import the controller
 import Controller.*;
+import Model.Tile;
+import Model.TileType;
 
 //The main window for the game.  
 //Responsible for communicating updates from the controller to its components, which then update to display the state of the gameObjects. 
@@ -20,7 +22,7 @@ public class GameView{
     private BoardPanel boardPanel;
 
     //Initializes a new game view based on the game parameters which are determined by the Controller.
-    public GameView(int boardSize,  int[] playerPositions, int[] playerDirections, HashMap<Integer, TileType> boardLayout){
+    public GameView(int boardSize, int[] playerPositions, int[] playerDirections, HashMap<Integer, Tile> boardLayout){
 
         //Initialize window & layout manager
         window = new JFrame("Robot Turtles alpha");
