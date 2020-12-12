@@ -4,7 +4,7 @@ public abstract class Tile {
 
     private boolean vacancy;
     private boolean crateState;
-    private TileType tileType;
+    protected TileType tileType;
 
     public Tile(boolean vacancy, boolean crateState){
         this.setVacancy(vacancy);

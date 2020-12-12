@@ -14,6 +14,10 @@ public class TileFactory {
                 return new Jewel();
             case PORTAL:
                 return new Portal();
+            case CRATE:
+                Tile crate = new RegularTile();
+                crate.addCrate();
+                return crate;
             default:
                 System.out.println("Tile type not found");
                 return null;

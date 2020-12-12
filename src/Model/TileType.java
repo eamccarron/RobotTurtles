@@ -6,5 +6,7 @@ public enum TileType {
     JEWEL,
     ICE_WALL,
     STONE_WALL,
-    PORTAL
+    PORTAL,
+    CRATE,
+    PUDDLE
 }

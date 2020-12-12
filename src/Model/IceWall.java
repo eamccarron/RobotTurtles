@@ -14,6 +14,7 @@ public class IceWall extends Tile{
         if (isFrozen) {
             setVacancy(true);
             setIsFrozen(false);
+            this.tileType = TileType.PUDDLE;
         }
     }
 

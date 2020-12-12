@@ -12,16 +12,16 @@ public class Board implements BoardManager {
     public static final int BOARD_SIZE = 64;
     public static final int BOARD_LENGTH = (int)Math.floor(Math.sqrt(BOARD_SIZE));
     private static final TileType[] initialBoardLayout1 =
-            {TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            {TileType.REGULAR, TileType.STONE_WALL, TileType.ICE_WALL, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            TileType.ICE_WALL, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
-            TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
-            TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.JEWEL, TileType.JEWEL, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
+            TileType.REGULAR, TileType.CRATE, TileType.REGULAR, TileType.JEWEL, TileType.JEWEL, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.JEWEL, TileType.JEWEL, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR,
             TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, TileType.REGULAR, };
-    private static final int[] initialCrateLocations = {};
     //Variables for tracking game state
+    //private boolean[] occupiedPositions = new boolean[BOARD_SIZE];
     private HashMap<Integer, Tile> layout = new HashMap<>(BOARD_SIZE);
     private Turtle[] turtles = new Turtle[4];
     private ArrayList<BoardSubscriber> subscribers = new ArrayList<>();
@@ -56,10 +56,6 @@ public class Board implements BoardManager {
                 }
             }
         }
-        for (int location : initialCrateLocations) {
-            board.getTile(location).addCrate();
-        }
-
     }
 
     public void setTurtles(Turtle[] turtles) {
