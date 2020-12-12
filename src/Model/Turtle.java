@@ -84,7 +84,7 @@ public class Turtle implements Player {
             default:
                 newPosition = currPosition;
         }
-        if (board.isPositionOccupied(newPosition)) {
+        if (!board.getTile(newPosition).getVacancy()) {
             System.out.println("Position Occupied");
             return false;
         }
